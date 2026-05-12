@@ -2,26 +2,74 @@
 <html>
 <head>
   <style>
-    body {
-      margin: 0;
-      padding-top: 0;
-      padding-bottom: 10%;
-      padding-left: 0;
-      padding-right: 0;
-      background: transparent;
-      user-select: none;
-      -webkit-app-region: drag;
+    .frame {
+      width: 420px;
+      height: 280px;
+      background: rgba(0, 0, 0, 0.01);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 0;
+      position: absolute;
     }
-    .pet {
-      font-size: 80px;
-      text-align: center;
+
+    .buttons {
+      position: absolute;
+      top: 5px;
+      left: 8px;
+      display: flex;
+      gap: 5px;
+      z-index: 2; 
+    }
+
+    .close-btn, .minimize-btn {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: none;
       cursor: pointer;
       -webkit-app-region: no-drag;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: rgba(0,0,0,0.01);
+      padding: 0;
     }
+
+    .close-btn { background: rgba(0, 0, 0, 0.01); }
+    .minimize-btn { background: rgba(0, 0, 0, 0.01); }
+
+    .content{
+      width: 400px;
+      height: 250px;
+      border-radius: 10px;  
+      background: white;
+      z-index: 1;
+      position: absolute; 
+      top: 20px; 
+      left: 10px;
+      -webkit-app-region: drag; 
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      width: 420px;
+      height: 280px;
+      user-select: none;   
+    }
+
+    
   </style>
 </head>
 <body>
-  <div class="pet">🐱</div>
-  <script src="renderer.js"></script>
+  <div class="frame">
+    <div class="buttons">
+      <button class="close-btn">x</button>
+      <button class="minimize-btn">-</button>
+    </div>
+    <div class="content"></div>
+  </div>
+  <script src="render.js"></script>  
 </body>
 </html>
