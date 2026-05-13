@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <style>
     .frame {
       width: 420px;
@@ -13,7 +15,7 @@
       position: absolute;
     }
 
-    .buttons {
+    .buttons-exit {
       position: absolute;
       top: 5px;
       left: 8px;
@@ -51,6 +53,24 @@
       -webkit-app-region: drag; 
     }
 
+    .checklist-btn {
+      width: 60px;
+      height: 30px;
+      top: 10px;
+      right: 10px;
+      border-radius: 10px;
+      background: rgb(251, 196, 77);
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      -webkit-app-region: no-drag;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.215);
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -64,11 +84,13 @@
 </head>
 <body>
   <div class="frame">
-    <div class="buttons">
+    <div class="buttons-exit">
       <button class="close-btn">x</button>
       <button class="minimize-btn">-</button>
     </div>
-    <div class="content"></div>
+    <div class="content">
+      <button class = "checklist-btn">checklist</button>
+    </div>
   </div>
   <script src="render.js"></script>  
 </body>

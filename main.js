@@ -1,13 +1,16 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const windowStateKeeper = require('electron-window-state');
 
+let win;          
+let checklistWin; 
+
 function createWindow() {
   const windowState = windowStateKeeper({
     defaultWidth: 420,
     defaultHeight: 280
   });
 
-  const win = new BrowserWindow({
+  win = new BrowserWindow({ 
     x: windowState.x,
     y: windowState.y,
     width: windowState.width,
@@ -29,5 +32,41 @@ function createWindow() {
 ipcMain.on('minimize-window', () => {
   BrowserWindow.getFocusedWindow().minimize();
 });
+
+function createChecklistWindow() {
+  const checklistState = windowStateKeeper({
+    defaultWidth: 250,
+    defaultHeight: 200
+  });
+
+  checklistWin = new BrowserWindow({
+    x: checklistState.x,
+    y: checklistState.y,
+    width: checklistState.width,
+    height: checklistState.height,
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+  checklistWin.loadFile('checklist.html');
+  checklistWin.setIgnoreMouseEvents(false);
+}
+
+ipcMain.on('open-checklist', () => {
+  createChecklistWindow();
+});
+
+ipcMain.on('close-checklist', () => {
+  if (checklistWin && !checklistWin.isDestroyed()) {
+    checklistWin.destroy();
+    checklistWin = null;
+  }
+});
+
 
 app.whenReady().then(createWindow);
