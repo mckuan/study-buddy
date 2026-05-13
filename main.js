@@ -47,12 +47,14 @@ function createChecklistWindow() {
     transparent: true,
     frame: false,
     alwaysOnTop: true,
+    hasShadow: false,
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
     }
   });
+  checklistState.manage(checklistWin);
   checklistWin.loadFile('checklist.html');
   checklistWin.setIgnoreMouseEvents(false);
 }
@@ -67,6 +69,7 @@ ipcMain.on('close-checklist', () => {
     checklistWin = null;
   }
 });
+
 
 
 app.whenReady().then(createWindow);

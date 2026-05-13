@@ -45,7 +45,10 @@
       width: 400px;
       height: 250px;
       border-radius: 10px;  
-      background: white;
+      background-image: url('cozy-room2.png');
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
       z-index: 1;
       position: absolute; 
       top: 20px; 
@@ -53,22 +56,28 @@
       -webkit-app-region: drag; 
     }
 
-    .checklist-btn {
+    .buttons {
+      display: flex;
+      gap: 20px;
+      position: absolute;
+      top: 15px;
+      right: 10px;
+      z-index: 2;
+    }
+
+    .invite-btn, .timer-btn, .checklist-btn {
       width: 60px;
       height: 30px;
-      top: 10px;
-      right: 10px;
       border-radius: 10px;
-      background: rgb(251, 196, 77);
+      background: rgb(244, 217, 157);
       border: none;
       cursor: pointer;
-      position: absolute;
       -webkit-app-region: no-drag;
       align-items: center;
       justify-content: center;
       font-family: 'Nunito', sans-serif;
       font-size: 13px;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.215);
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.651);
     }
 
     body {
@@ -89,7 +98,11 @@
       <button class="minimize-btn">-</button>
     </div>
     <div class="content">
-      <button class = "checklist-btn">checklist</button>
+      <div class="buttons">
+        <button class = "invite-btn">invite</button>
+        <button class = "timer-btn">timer</button>
+        <button class = "checklist-btn">checklist</button>
+      </div>
     </div>
   </div>
   <script src="render.js"></script>  

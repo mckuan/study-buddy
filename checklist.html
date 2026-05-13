@@ -16,6 +16,27 @@
       -webkit-app-region: drag;
     }
 
+    .input-text {
+      width: 240px;
+      padding: 4px;
+      margin-bottom: 12px;
+      border: transparent;
+      font-family: 'Nunito', sans-serif;
+      border-radius: 4px;
+      font-size: 14px;
+      -webkit-app-region: no-drag;
+    }
+
+    .checklist-items {
+      width: 230px;
+      max-height: 150px;
+      overflow-y: scroll;
+      align-Items: center ;
+      -webkit-app-region: no-drag;
+    }
+
+
+
     body {
       margin: 0;
       width: 250px;
@@ -28,7 +49,9 @@
 </head>
 <body>
   <div class="checklist-frame">
-    <p>checklist goes here</p>
+    <input class="input-text" placeholder="Add new item">
+    <div class="checklist-items"></div>
   </div>
+  <script src="checklist-render.js"></script>
 </body>
 </html>
