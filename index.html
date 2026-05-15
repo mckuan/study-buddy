@@ -80,6 +80,51 @@
       box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.651);
     }
 
+    .timer-content {
+      position: absolute;
+      width: 120px;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(247, 120, 201, 0.8);
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 18px;
+      color: #333;
+      flex-wrap: wrap;
+      display: none;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .timer-display {
+      width: 80px;
+      text-align: center;
+    }
+
+    .increment-btn {
+      width: 20px;
+      right: 60px;
+      -webkit-app-region: no-drag;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .decrement-btn {
+      width: 20px;
+      right: 20px;
+      -webkit-app-region: no-drag;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .start-btn {
+      -webkit-app-region: no-drag;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -102,6 +147,12 @@
         <button class = "invite-btn">invite</button>
         <button class = "timer-btn">timer</button>
         <button class = "checklist-btn">checklist</button>
+      </div>
+      <div class="timer-content">
+        <button class = "increment-btn">+</button>
+        <div class="timer-display"></div>
+        <button class = "decrement-btn">-</button>
+        <button class="start-btn">start</button>
       </div>
     </div>
   </div>
