@@ -35,8 +35,9 @@ ipcMain.on('minimize-window', () => {
 
 function createChecklistWindow() {
   const checklistState = windowStateKeeper({
-    defaultWidth: 250,
-    defaultHeight: 200
+    defaultWidth: 280,
+    defaultHeight: 220,
+    file: 'checklist-window-state.json'
   });
 
   checklistWin = new BrowserWindow({
@@ -67,6 +68,18 @@ ipcMain.on('close-checklist', () => {
   if (checklistWin && !checklistWin.isDestroyed()) {
     checklistWin.destroy();
     checklistWin = null;
+  }
+});
+
+ipcMain.on('focus-main-window', () => {
+  if (win) {
+    win.focus();
+  }
+});
+
+ipcMain.on('focus-checklist-window', () => {
+  if (checklistWin) {
+    checklistWin.focus();
   }
 });
 

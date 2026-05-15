@@ -130,6 +130,10 @@ function renderDateOptions() {
   });
 }
 
+document.addEventListener('click', () => {
+  ipcRenderer.send('focus-checklist-window');
+});
+
 
 renderChecklist();
 renderDateOptions();

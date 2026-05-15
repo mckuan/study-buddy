@@ -57,3 +57,7 @@ frame.addEventListener('click', (e) => {
 ipcRenderer.on('checklist-closed', () => {
   checklistOpen = false;
 });
+
+document.addEventListener('click', () => {
+  ipcRenderer.send('focus-main-window');
+});
