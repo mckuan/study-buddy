@@ -1,15 +1,22 @@
 const input = document.querySelector('.input-text');
 const checklistItemsContainer = document.querySelector('.checklist-items');
 const completeItemsContainer = document.querySelector('.complete-items');
+const dateBtn = document.querySelector('.date-btn');
+const dropdown = document.querySelector('.dropdown');
+const date = new Date();
+let dateIdx = 0;
+localStorage.setItem('selectedDateIdx', 0);
 
-let checklistItems = JSON.parse(localStorage.getItem('checklistItems')) || [];
-let completeItems = JSON.parse(localStorage.getItem('completeItems')) || [];
+dateBtn.textContent = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ▾';
+
+let checklistItems = JSON.parse(localStorage.getItem('checklistItems')) || Array.from({ length: 5 }, () => []);
+let completeItems = JSON.parse(localStorage.getItem('completeItems')) || Array.from({ length: 5 }, () => []);
 
 function renderChecklist() {
 
   //Render active tasks
   checklistItemsContainer.innerHTML = '';
-  checklistItems.forEach((item, index) => {
+  checklistItems[dateIdx].forEach((item, index) => {
     const itemElement = document.createElement('div');
     itemElement.classList.add('checklist-item');
     
@@ -17,10 +24,10 @@ function renderChecklist() {
     checkbox.type = 'checkbox';
     checkbox.checked = false;
     checkbox.addEventListener('change', () => {
-      const currItem = checklistItems[index];
+      const currItem = checklistItems[dateIdx][index];
       currItem.completed = true;
-      checklistItems.splice(index, 1);
-      completeItems.push(currItem);
+      checklistItems[dateIdx].splice(index, 1);
+      completeItems[dateIdx].push(currItem);
       saveChecklistItems();
       renderChecklist();
     });
@@ -32,7 +39,7 @@ function renderChecklist() {
     deleteBtn.textContent = 'x';
     deleteBtn.classList.add('delete-btn')
     deleteBtn.addEventListener('click', () => {
-      checklistItems.splice(index, 1); 
+      checklistItems[dateIdx].splice(index, 1); 
       saveChecklistItems();
       renderChecklist();
     });
@@ -45,7 +52,7 @@ function renderChecklist() {
 
   //Render completed tasks
   completeItemsContainer.innerHTML = '';
-  completeItems.forEach((item, index) => {
+  completeItems[dateIdx].forEach((item, index) => {
     const itemElement = document.createElement('div');
     itemElement.classList.add('complete-item');
 
@@ -53,10 +60,10 @@ function renderChecklist() {
     checkbox.type = 'checkbox';
     checkbox.checked = true;
     checkbox.addEventListener('change', () => {
-      const currItem = completeItems[index];
+      const currItem = completeItems[dateIdx][index];
       currItem.completed = false;
-      completeItems.splice(index, 1);
-      checklistItems.push(currItem); 
+      completeItems[dateIdx].splice(index, 1);
+      checklistItems[dateIdx].push(currItem); 
       saveChecklistItems();
       renderChecklist();
     });
@@ -70,7 +77,7 @@ function renderChecklist() {
     deleteBtn.textContent = 'x';
     deleteBtn.classList.add('delete-btn')
     deleteBtn.addEventListener('click', () => {
-      completeItems.splice(index, 1);
+      completeItems[dateIdx].splice(index, 1);
       saveChecklistItems();
       renderChecklist();
     });
@@ -89,11 +96,40 @@ function saveChecklistItems() {
 
 input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && input.value.trim() !== '') {
-    checklistItems.push({ text: input.value.trim(), completed: false });
+    checklistItems[dateIdx].push({ text: input.value.trim(), completed: false });
     input.value = '';
+    input.placeholder = 'Add new task...';
     saveChecklistItems();
     renderChecklist();
   }
 });
 
+dateBtn.addEventListener('click', (e) => {
+  if (e.target === dateBtn) {
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+    dateBtn.style.display = 'none';
+  }
+});
+
+function renderDateOptions() {
+  const dayButtons = dropdown.querySelectorAll('button');
+  dayButtons.forEach((btn, index) => {
+    const optionDate = new Date();
+    optionDate.setDate(date.getDate() + index);
+    btn.textContent = optionDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    btn.addEventListener('click', () => {
+      dateBtn.textContent = btn.textContent + ' ▾';
+      input.value = '';
+      input.placeholder = 'Add new task...';
+      dropdown.style.display = 'none';
+      dateBtn.style.display = 'block';
+      dateIdx = index;
+      localStorage.setItem('selectedDateIdx', dateIdx);
+      renderChecklist();
+    });
+  });
+}
+
+
 renderChecklist();
+renderDateOptions();
