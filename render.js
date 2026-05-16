@@ -130,10 +130,12 @@ function formatTimewithSeconds(seconds) {
 function startTimer() {
   let remainingTime = minutes * 60; 
   timerDisplay.textContent = formatTimewithSeconds(remainingTime);
+  ipcRenderer.send('request-block');
   const timerInterval = setInterval(() => {
     remainingTime -= 1;
     timerDisplay.textContent = formatTimewithSeconds(remainingTime);
     if (remainingTime <= 0) {
+      ipcRenderer.send('request-unblock');
       clearInterval(timerInterval);
       timerDisplay.textContent = '00:00';
       incrementBtn.style.display = 'flex';
@@ -149,8 +151,5 @@ startBtn.addEventListener('click', () => {
     incrementBtn.style.display = 'none';
     decrementBtn.style.display = 'none';
     startBtn.style.display = 'none';
-    timerDisplay.alignItems = 'center';
-    timerDisplay.justifyContent = 'center';
-    timerDisplay.margin = '0 auto';
   }
 });
