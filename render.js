@@ -166,5 +166,4 @@ settingsBtn.addEventListener('click', () => {
 closesettings.addEventListener('click', ()=> {
   blur.style.display = 'none';
   settings.style.display = 'none';
-
 })

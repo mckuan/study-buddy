@@ -24,7 +24,7 @@
       z-index: 2; 
     }
 
-    .close-btn, .minimize-btn {
+    .close-btn, .minimize-btn, .settings-close {
       width: 13px;
       height: 13px;
       border-radius: 50%;
@@ -54,6 +54,18 @@
       top: 20px; 
       left: 10px;
       -webkit-app-region: drag; 
+    }
+
+    .blur{
+      width: 400px;
+      height: 250px;
+      border-radius: 10px;  
+      background-color: rgba(255, 255, 255, 0.319);
+      border-radius: 10px;
+      z-index: 5;
+      position: absolute; 
+      display: none;
+      -webkit-app-region: no-drag; 
     }
 
     .buttons {
@@ -125,6 +137,44 @@
       margin: 0 auto;
     }
 
+    .settings-btn {
+      width: 30px;
+      height: 30px;
+      top: 55px;
+      right: 10px;
+      border-radius: 50%;
+      border: none;
+      background: rgb(244, 217, 157);
+      font-size: 18px;
+      position: absolute;
+      -webkit-app-region: no-drag;
+      cursor: pointer;
+    }
+
+    .settings {
+      width: 220px;
+      height: 220px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 15px;
+      border: none;
+      background: white;
+      position: absolute;
+      -webkit-app-region: no-drag;
+      display: none;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .settings-close{
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: grey;
+      color: black;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -143,6 +193,7 @@
       <button class="minimize-btn">-</button>
     </div>
     <div class="content">
+      <div class="blur" ></div>
       <div class="buttons">
         <button class = "invite-btn">invite</button>
         <button class = "timer-btn">timer</button>
@@ -153,6 +204,10 @@
         <div class="timer-display"></div>
         <button class = "decrement-btn">-</button>
         <button class="start-btn">start</button>
+      </div>
+      <button class="settings-btn">⚙</button>
+      <div class="settings">  
+        <button class="settings-close">x</button>
       </div>
     </div>
   </div>
