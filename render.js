@@ -11,6 +11,10 @@ const timerDisplay = document.querySelector('.timer-display');
 const incrementBtn = document.querySelector('.increment-btn');
 const decrementBtn = document.querySelector('.decrement-btn');
 const startBtn = document.querySelector('.start-btn');
+const settingsBtn = document.querySelector('.settings-btn');
+const settings = document.querySelector('.settings');
+const blur = document.querySelector('.blur');
+const closesettings = document.querySelector('.settings-close');
 let minutes = 0;
 let checklistOpen = false;
 
@@ -130,7 +134,6 @@ function formatTimewithSeconds(seconds) {
 function startTimer() {
   let remainingTime = minutes * 60; 
   timerDisplay.textContent = formatTimewithSeconds(remainingTime);
-  ipcRenderer.send('request-block');
   const timerInterval = setInterval(() => {
     remainingTime -= 1;
     timerDisplay.textContent = formatTimewithSeconds(remainingTime);
@@ -146,6 +149,7 @@ function startTimer() {
 }
 
 startBtn.addEventListener('click', () => {
+  ipcRenderer.send('request-block');
   if (minutes > 0) {
     startTimer();
     incrementBtn.style.display = 'none';
@@ -153,3 +157,14 @@ startBtn.addEventListener('click', () => {
     startBtn.style.display = 'none';
   }
 });
+
+settingsBtn.addEventListener('click', () => {
+  blur.style.display = 'block';
+  settings.style.display = 'block';
+});
+
+closesettings.addEventListener('click', ()=> {
+  blur.style.display = 'none';
+  settings.style.display = 'none';
+
+})

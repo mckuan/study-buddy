@@ -1,12 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const windowStateKeeper = require('electron-window-state');
-const {exec} = require('child_process');
-const blocksites = ['youtube.com', 'facebook.com', 'twitter.com', 'instagram.com', 'reddit.com'];
-const BLOCK_TAG= '# study-buddy-block';
-const fs = require('fs');
+const { unblockWebsites, blockWebsites } = require('./hosts');
 
 let win;          
 let checklistWin; 
+let settingsWin;
+
 
 function createWindow() {
   const windowState = windowStateKeeper({
@@ -87,36 +86,6 @@ ipcMain.on('focus-checklist-window', () => {
   }
 });
 
-function runAsAdmin(command) {
-  return new Promise((resolve, reject) => {
-    exec('osascript -e \'do shell script "' + command + '" with administrator privileges\'', 
-      (error, stdout, stderr) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(stdout);
-        }
-      });
-  });
-}
-
-async function blockWebsites() {
-  const entries = blocksites.flatMap(site => [
-    `127.0.0.1 ${site}`,
-    `127.0.0.1 www.${site}`
-  ]).join('\n');
-
-  const tempFile = '/tmp/study-buddy-block.txt';
-  fs.writeFileSync(tempFile, `\n${BLOCK_TAG}\n${entries}\n`);
-
-  await runAsAdmin(`cat /tmp/study-buddy-block.txt >> /etc/hosts`);
-  await runAsAdmin('dscacheutil -flushcache');
-}
-
-async function unblockWebsites() {
-  await runAsAdmin(`sed -i '' '/${BLOCK_TAG}/,/^$/d' /etc/hosts`);
-  await runAsAdmin('dscacheutil -flushcache');
-}
 
 ipcMain.on('request-block', async () => {
   try{
