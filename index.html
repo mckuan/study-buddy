@@ -45,7 +45,7 @@
       width: 400px;
       height: 250px;
       border-radius: 10px;  
-      background-image: url('cozy-room2.png');
+      background-image: url('main-background.png');
       background-size: cover;
       background-position: center;
       border-radius: 10px;
@@ -81,7 +81,7 @@
       width: 60px;
       height: 30px;
       border-radius: 10px;
-      background: rgb(244, 217, 157);
+      background: #eda3a3;
       border: none;
       cursor: pointer;
       -webkit-app-region: no-drag;
@@ -98,7 +98,7 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(247, 120, 201, 0.8);
+      background: #eda3a3;
       border-radius: 10px;
       padding: 10px 20px;
       font-family: 'Nunito', sans-serif;
@@ -144,10 +144,11 @@
       right: 10px;
       border-radius: 50%;
       border: none;
-      background: rgb(244, 217, 157);
+      background: #eda3a3;
       font-size: 18px;
       position: absolute;
       -webkit-app-region: no-drag;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.651);
       cursor: pointer;
     }
 
@@ -173,6 +174,101 @@
       left: 10px;
       background-color: grey;
       color: black;
+    }
+
+    .heading{
+      position: absolute;
+      left: 50%;
+      top: 30px;
+      transform: translate(-50%, -50%);
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      -webkit-app-region: no-drag;
+    }
+
+    .toggle {
+      position: absolute;
+      top: 55px;
+      left: 20px;
+      display: inline-block;
+      width: 30px;
+      height: 15px;
+      -webkit-app-region: no-drag;
+    }
+
+    .toggle-input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+
+      background: #ccc;
+      border-radius: 34px;
+
+      transition: 0.2s;
+      -webkit-app-region: no-drag;
+    }
+
+    .slider::before {
+      content: '';
+
+      position: absolute;
+      width: 13px;
+      height: 13px;
+
+      left: 1px;
+      top: 1px;
+
+      background: white;
+      border-radius: 50%;
+
+      transition: 0.2s;
+    }
+
+    .toggle-input:checked + .slider {
+      background: #eda3a3;
+    }
+
+    .toggle-input:checked + .slider::before {
+      transform: translateX(15px);
+    }
+
+    .toggle-instructions{
+      position: absolute;
+      top: 50px;
+      left: 60px;
+      overflow-y: auto;
+      width: 150px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+    }
+
+    .dropdown-button, .dropdown{
+      position: absolute;
+      width: 170px;
+      left: 20px;
+      top: 100px;
+      border: px solid rgb(162, 159, 159);
+      border-radius: 5px;
+      background-color: transparent;
+      text-align: left;
+      font-family: 'Nunito', sans-serif;
+      -webkit-app-region: no-drag;
+    }
+
+    .dropdown {
+      top: 150px;
+      display: none;
+    }
+
+    .input-text{
+      left: 20px;
+      width: 150px;
+      text-align: left;
+      font-size: 10px;
     }
 
     body {
@@ -208,6 +304,17 @@
       <button class="settings-btn">⚙</button>
       <div class="settings">  
         <button class="settings-close">x</button>
+        <div class="heading">Settings</div>
+        <label class="toggle">
+          <input type="checkbox" class="toggle-input">
+          <span class="slider"></span>
+        </label>
+        <div class="toggle-instructions">Allow Studybuddy to block certain websites</div>
+        <button class="dropdown-button">  Blocked Sites ▾</button>
+        <div class="dropdown">
+          <div class="sites"></div>
+          <input class="input-text" placeholder="Domain name ex: youtube.com"/>
+        </div>
       </div>
     </div>
   </div>
