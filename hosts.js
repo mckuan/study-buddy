@@ -4,15 +4,16 @@ const fs = require('fs');
 const BLOCK_TAG = '# study-buddy-block';
 let blocksites = ['reddit.com'];
  
-let sudoPassword = null;        // cached after first auth
-let blockingEnabled = true;     // toggled from settings
+let sudoPassword = null;      
+let blockingEnabled = true;     
  
-// ── helpers ──────────────────────────────────────────────────────────────────
- 
+/**
+ * we run the password we got previously into the terminal
+ * and if it goes through we run in the commands 
+ * @param {*} command given during block/unblock
+ */
 function runWithSudo(command) {
   return new Promise((resolve, reject) => {
-    // Use sudo -S so we can pipe the password via stdin; -k resets any
-    // existing cached credential so our explicit password is always used.
     const proc = exec(
       `sudo -S -k sh -c '${command.replace(/'/g, `'\\''`)}'`,
       (error, stdout, stderr) => {
@@ -71,19 +72,20 @@ function validatePassword(password) {
  * Returns true on success, false if the user cancels or enters a wrong password.
  */
 async function ensureAdminAccess() {
-  if (sudoPassword !== null) return true;   // already authenticated this session
- 
+  if (sudoPassword !== null) return true;   
+
   try {
     const password = await promptForPassword();
     const valid = await validatePassword(password);
     if (!valid) {
       sudoPassword = null;
-      return false;
+      return 'wrong-password';
     }
     sudoPassword = password;
+    blockingEnabled = true;
     return true;
   } catch {
-    return false;
+    return 'cancelled';
   }
 }
  
@@ -91,15 +93,21 @@ async function ensureAdminAccess() {
 function revokeAdminAccess() {
   sudoPassword = null;
 }
- 
-// ── public API ────────────────────────────────────────────────────────────────
- 
+
+ /**
+  * Call this to block the websites
+  * Checks if blocking was allowed previously writes to computer 
+  * making all blocked sites start with local host and clears dns caches
+  */
 async function blockWebsites() {
   if (!blockingEnabled) return;
  
-  const ok = await ensureAdminAccess();
-  if (!ok) throw new Error('Admin access not granted');
- 
+  const result = await ensureAdminAccess();
+  if (result !== 'ok'){
+    blockingEnabled = false;
+    throw new Error(result);
+  }
+
   const entries = blocksites.flatMap(site => [
     `127.0.0.1 ${site}`,
     `127.0.0.1 www.${site}`
@@ -112,6 +120,11 @@ async function blockWebsites() {
   await runWithSudo('dscacheutil -flushcache; killall -HUP mDNSResponder');
 }
  
+/**
+ * Calls to unblock websites
+ * checks if blocking was allowed 
+ * and deletes the lines we wrote when blocking and clears cache 
+ */
 async function unblockWebsites() {
   if (!blockingEnabled) return;
  
@@ -132,10 +145,23 @@ async function unblockWebsites() {
   await runWithSudo('dscacheutil -flushcache; killall -HUP mDNSResponder');
 }
  
-function setBlockingEnabled(enabled) {
+/**
+ * if blocking is true its true, if not (user toggles it off) 
+ * we delete the current pswd if we turn on blocking we ask for new pswd
+ * and if pswd is wrong or they decide not to we toggle back off
+ * @param {*} enabled if blockingEnabled true or false then
+ */
+async function setBlockingEnabled(enabled) {
   blockingEnabled = enabled;
   if (!enabled) {
-    revokeAdminAccess();   // forget password when user turns the feature off
+    revokeAdminAccess();
+    return 'ok';
+  } else {
+    const result = await ensureAdminAccess();
+    if (result !== 'ok') {
+      blockingEnabled = false;
+    }
+    return result;
   }
 }
  

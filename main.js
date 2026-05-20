@@ -1,17 +1,21 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const windowStateKeeper = require('electron-window-state');
-const { unblockWebsites, blockWebsites, setBlockingEnabled, setBlockedSites } = require('./hosts');
- 
-let win;
-let checklistWin;
- 
+const { unblockWebsites, blockWebsites, 
+  setBlockingEnabled, setBlockedSites } = require('./hosts');
+let{blocksites} = require('./hosts');
+
+let win;          
+let checklistWin; 
+let settingsWin;
+
+
 function createWindow() {
   const windowState = windowStateKeeper({
     defaultWidth: 420,
     defaultHeight: 280
   });
- 
-  win = new BrowserWindow({
+
+  win = new BrowserWindow({ 
     x: windowState.x,
     y: windowState.y,
     width: windowState.width,
@@ -29,18 +33,18 @@ function createWindow() {
   win.loadFile('index.html');
   win.setIgnoreMouseEvents(false);
 }
- 
+
 ipcMain.on('minimize-window', () => {
   BrowserWindow.getFocusedWindow().minimize();
 });
- 
+
 function createChecklistWindow() {
   const checklistState = windowStateKeeper({
     defaultWidth: 280,
     defaultHeight: 220,
     file: 'checklist-window-state.json'
   });
- 
+
   checklistWin = new BrowserWindow({
     x: checklistState.x,
     y: checklistState.y,
@@ -60,33 +64,37 @@ function createChecklistWindow() {
   checklistWin.loadFile('checklist.html');
   checklistWin.setIgnoreMouseEvents(false);
 }
- 
+
 ipcMain.on('open-checklist', () => {
   createChecklistWindow();
 });
- 
+
 ipcMain.on('close-checklist', () => {
   if (checklistWin && !checklistWin.isDestroyed()) {
     checklistWin.destroy();
     checklistWin = null;
   }
 });
- 
+
 ipcMain.on('focus-main-window', () => {
-  if (win) win.focus();
+  if (win) {
+    win.focus();
+  }
 });
- 
+
 ipcMain.on('focus-checklist-window', () => {
-  if (checklistWin) checklistWin.focus();
+  if (checklistWin) {
+    checklistWin.focus();
+  }
 });
- 
-ipcMain.on('request-block', async () => {
+
+
+ipcMain.on('request-block', async (event) => {
   try {
     await blockWebsites();
   } catch (err) {
     console.error('Blocking failed:', err);
-    // Notify renderer so it can reset the UI if auth was denied
-    if (win) win.webContents.send('block-failed');
+    event.reply('toggle-block-failed', { wrongPassword: err.message === 'wrong-password' });
   }
 });
  
@@ -98,11 +106,14 @@ ipcMain.on('request-unblock', async () => {
   }
 });
  
-// Sent from the settings toggle in render.js
-// payload: { enabled: boolean, sites: string[] }
-ipcMain.on('set-blocking-enabled', (_, { enabled, sites }) => {
+ipcMain.on('set-blocking-enabled', async (event, { enabled, sites }) => {
   if (sites) setBlockedSites(sites);
-  setBlockingEnabled(enabled);
+  const result = await setBlockingEnabled(enabled);
+  if (result === 'wrong-password') {
+    event.reply('toggle-block-failed', { wrongPassword: true });
+  } else if (result === 'cancelled') {
+    event.reply('toggle-block-failed', { wrongPassword: false });
+  }
 });
  
 app.whenReady().then(createWindow);

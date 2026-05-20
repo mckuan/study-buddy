@@ -56,6 +56,21 @@
       -webkit-app-region: drag; 
     }
 
+    .error-popup {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 80, 80, 0.9);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      display: none;
+      z-index: 20;
+    }
+
     .blur{
       width: 400px;
       height: 250px;
@@ -289,6 +304,7 @@
       <button class="minimize-btn">-</button>
     </div>
     <div class="content">
+      <div class="error-popup">Incorrect password</div>
       <div class="blur" ></div>
       <div class="buttons">
         <button class = "invite-btn">invite</button>
