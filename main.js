@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const windowStateKeeper = require('electron-window-state');
-const { unblockWebsites, blockWebsites, 
+const { unblockWebsites, blockWebsites, getBlockingEnabled, 
   setBlockingEnabled, setBlockedSites } = require('./hosts');
 let{blocksites} = require('./hosts');
 
@@ -88,10 +88,15 @@ ipcMain.on('focus-checklist-window', () => {
   }
 });
 
+ipcMain.on('get-blocking-enabled', (event) => {
+  event.reply('blocking-enabled-state', { enabled: getBlockingEnabled() });
+});
+
 
 ipcMain.on('request-block', async (event) => {
   try {
     await blockWebsites();
+    event.reply('toggle-block-success');
   } catch (err) {
     console.error('Blocking failed:', err);
     event.reply('toggle-block-failed', { wrongPassword: err.message === 'wrong-password' });

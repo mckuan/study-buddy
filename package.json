@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "electron": "^42.0.1",
-    "electron-window-state": "^5.0.3"
+    "electron-store": "^8.2.0",
+    "electron-window-state": "^5.0.3",
+    "keytar": "^7.9.0"
   }
 }

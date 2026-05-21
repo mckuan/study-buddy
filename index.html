@@ -76,7 +76,6 @@
       height: 250px;
       border-radius: 10px;  
       background-color: rgba(255, 255, 255, 0.319);
-      border-radius: 10px;
       z-index: 5;
       position: absolute; 
       display: none;
@@ -113,7 +112,7 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: #eda3a3;
+      background: #eda3a3d7;
       border-radius: 10px;
       padding: 10px 20px;
       font-family: 'Nunito', sans-serif;
@@ -129,8 +128,12 @@
       text-align: center;
     }
 
-    .increment-btn {
+    .increment-btn, .decrement-btn{
       width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.2);
       right: 60px;
       -webkit-app-region: no-drag;
       align-items: center;
@@ -138,15 +141,14 @@
     }
 
     .decrement-btn {
-      width: 20px;
       right: 20px;
-      -webkit-app-region: no-drag;
-      align-items: center;
-      justify-content: center;
     }
 
     .start-btn {
       -webkit-app-region: no-drag;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
       align-items: center;
       justify-content: center;
       margin: 0 auto;
@@ -175,19 +177,30 @@
       transform: translate(-50%, -50%);
       border-radius: 15px;
       border: none;
-      background: white;
+      background: rgb(255, 255, 255);
       position: absolute;
       -webkit-app-region: no-drag;
       display: none;
       z-index: 10;
       cursor: pointer;
     }
+    
+    .blur-settings {
+      width: 220px;
+      height: 220px;
+      z-index:15;
+      border-radius: 15px;
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.516);
+      display: none;
+    }
 
     .settings-close{
       position: absolute;
       top: 10px;
       left: 10px;
-      background-color: grey;
+      background-color: #eda3a3;
+      z-index: 17;
       color: black;
     }
 
@@ -266,7 +279,7 @@
       width: 170px;
       left: 20px;
       top: 100px;
-      border: px solid rgb(162, 159, 159);
+      border: px solid #eda3a3;
       border-radius: 5px;
       background-color: transparent;
       text-align: left;
@@ -319,6 +332,7 @@
       </div>
       <button class="settings-btn">⚙</button>
       <div class="settings">  
+        <div class="blur-settings"></div>
         <button class="settings-close">x</button>
         <div class="heading">Settings</div>
         <label class="toggle">

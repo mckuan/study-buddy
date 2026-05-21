@@ -1,11 +1,14 @@
 const { exec } = require('child_process');
+const Store = require('electron-store');
+const store = new Store();
 const fs = require('fs');
- 
+const { get } = require('http');
+const keytar = require('keytar'); 
 const BLOCK_TAG = '# study-buddy-block';
-let blocksites = ['reddit.com'];
- 
-let sudoPassword = null;      
-let blockingEnabled = true;     
+let blocksites = ['reddit.com', 'youtube.com', 
+  'twitter.com', 'facebook.com', 'instagram.com'];
+let sudoPassword = null; 
+let blockingEnabled = store.get('blockingEnabled', false); 
  
 /**
  * we run the password we got previously into the terminal
@@ -72,30 +75,31 @@ function validatePassword(password) {
  * Returns true on success, false if the user cancels or enters a wrong password.
  */
 async function ensureAdminAccess() {
-  if (sudoPassword !== null) return true;   
+  const cached = await keytar.getPassword('study-buddy', 'admin');
+  if (cached !== null) {
+    sudoPassword = cached;
+    return 'ok';
+  }
 
   try {
     const password = await promptForPassword();
-    const valid = await validatePassword(password);
-    if (!valid) {
-      sudoPassword = null;
-      return 'wrong-password';
-    }
+    await keytar.setPassword('study-buddy', 'admin', password);
     sudoPassword = password;
     blockingEnabled = true;
-    return true;
+    return 'ok';
   } catch {
     return 'cancelled';
   }
 }
  
 /** Call from the settings toggle to forget the cached credential. */
-function revokeAdminAccess() {
+async function revokeAdminAccess() {
   sudoPassword = null;
+  await keytar.deletePassword('study-buddy', 'admin');
 }
 
  /**
-  * Call this to block the websites
+  * Call this to block the websites. It will prompt for a password if not cached, and validate it.
   * Checks if blocking was allowed previously writes to computer 
   * making all blocked sites start with local host and clears dns caches
   */
@@ -103,8 +107,11 @@ async function blockWebsites() {
   if (!blockingEnabled) return;
  
   const result = await ensureAdminAccess();
-  if (result !== 'ok'){
+  if (result === 'cancelled'){
     blockingEnabled = false;
+    throw new Error(result);
+  }
+  if (result === 'wrong-password'){
     throw new Error(result);
   }
 
@@ -128,8 +135,8 @@ async function blockWebsites() {
 async function unblockWebsites() {
   if (!blockingEnabled) return;
  
-  const ok = await ensureAdminAccess();
-  if (!ok) throw new Error('Admin access not granted');
+  const result = await ensureAdminAccess();
+  if (result !== 'ok') return;
  
   const hostsPath = '/etc/hosts';
   const content = fs.readFileSync(hostsPath, 'utf8');
@@ -153,8 +160,9 @@ async function unblockWebsites() {
  */
 async function setBlockingEnabled(enabled) {
   blockingEnabled = enabled;
+  store.set('blockingEnabled', enabled);
   if (!enabled) {
-    revokeAdminAccess();
+    await revokeAdminAccess();
     return 'ok';
   } else {
     const result = await ensureAdminAccess();
@@ -168,6 +176,10 @@ async function setBlockingEnabled(enabled) {
 function setBlockedSites(sites) {
   blocksites = sites;
 }
+
+function getBlockingEnabled() {
+  return blockingEnabled;
+}
  
 module.exports = {
   blockWebsites,
@@ -175,4 +187,5 @@ module.exports = {
   setBlockingEnabled,
   setBlockedSites,
   revokeAdminAccess,
+  getBlockingEnabled,
 };

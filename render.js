@@ -19,11 +19,14 @@ const toggle = document.querySelector('.toggle-input');
 const dropdownBtn = document.querySelector('.dropdown-button');
 const dropdown = document.querySelector('.dropdown');
 const errorPopup = document.querySelector('.error-popup');
+const settingsblur = document.querySelector('.blur-settings');
+const blockedContainer = document.querySelector('.sites'); 
 
 let minutes = 0;
 let checklistOpen = false;
 let holdInterval = null;
-let blockedsites = [];
+let blockedsites = JSON.parse(localStorage.getItem('blockedsites')) || 
+['reddit.com', 'youtube.com', 'twitter.com', 'facebook.com', 'instagram.com'];
 
 frame.addEventListener('mouseover', (e) => {
   if (e.target === frame) {
@@ -137,6 +140,7 @@ function formatTimewithSeconds(seconds) {
 }
 
 function startTimer() {
+  settingsblur.style.display = 'block';
   let remainingTime = minutes * 60; 
   timerDisplay.textContent = formatTimewithSeconds(remainingTime);
   const timerInterval = setInterval(() => {
@@ -145,6 +149,7 @@ function startTimer() {
     if (remainingTime <= 0) {
       ipcRenderer.send('request-unblock');
       clearInterval(timerInterval);
+      settingsblur.style.display = 'none';
       timerDisplay.textContent = '00:00';
       incrementBtn.style.display = 'flex';
       decrementBtn.style.display = 'flex';
@@ -159,13 +164,17 @@ startBtn.addEventListener('click', () => {
     incrementBtn.style.display = 'none';
     decrementBtn.style.display = 'none';
     startBtn.style.display = 'none';
-    startTimer();
   }
 });
 
 settingsBtn.addEventListener('click', () => {
   blur.style.display = 'block';
   settings.style.display = 'block';
+  ipcRenderer.send('get-blocking-enabled');
+});
+
+ipcRenderer.on('blocking-enabled-state', (_, { enabled }) => {
+  toggle.checked = enabled;
 });
 
 closesettings.addEventListener('click', ()=> {
@@ -182,18 +191,38 @@ toggle.addEventListener('change', () => {
 
 ipcRenderer.on('toggle-block-failed', (_, { wrongPassword }) => {
   toggle.checked = false;
-  incrementBtn.style.display = 'flex';
-  decrementBtn.style.display = 'flex';
-  startBtn.style.display = 'flex';
   if (wrongPassword) {
+    incrementBtn.style.display = 'flex';
+    decrementBtn.style.display = 'flex';
+    startBtn.style.display = 'flex';
     errorPopup.style.display = 'block';
+    timerDisplay.textContent = formatTime(minutes);
     setTimeout(() => errorPopup.style.display = 'none', 3000);
+  } else {
+    startTimer();
   }
 });
+
+ipcRenderer.on('toggle-block-success', () => {
+  toggle.checked = true;
+  startTimer();
+})
 
 dropdownBtn.addEventListener('click', () => {
   dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
 })
+
 async function getblockedsites(){
   return await ipcRenderer.invoke('get-blocked-sites');
 }
+
+function renderDropdown(){
+  blockedContainer.innerHTML = '';
+  blockedsites.forEach(site => {
+    const siteElement = document.createElement('div');
+    siteElement.textContent = site;
+    blockedContainer.appendChild(siteElement);
+  });
+}
+
+renderDropdown();
