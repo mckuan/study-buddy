@@ -24,6 +24,8 @@ const blockedContainer = document.querySelector('.sites');
 const inputContainer = document.querySelector('.input-text');
 const pause = document.querySelector('.pause-btn');
 const stop = document.querySelector('.stop-btn');
+const invite = document.querySelector('.invite-btn');
+const inviteContent = document.querySelector('.invite-content');
 
 let minutes = 0;
 let isPaused = false;
@@ -286,6 +288,10 @@ pause.addEventListener('click', () => {
 
 stop.addEventListener('click', () => {
   stopTimer();
+})
+
+invite.addEventListener('click', () => {
+  inviteContent.style.display = inviteContent.style.display === 'flex' ? 'none' : 'flex';
 })
 
 renderDropdown();

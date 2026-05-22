@@ -4,19 +4,27 @@ const completeItemsContainer = document.querySelector('.complete-items');
 const dateBtn = document.querySelector('.date-btn');
 const dropdown = document.querySelector('.dropdown');
 const date = new Date();
-let dateIdx = 0;
-localStorage.setItem('selectedDateIdx', 0);
+let dateKey;
 
 dateBtn.textContent = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ▾';
 
-let checklistItems = JSON.parse(localStorage.getItem('checklistItems')) || Array.from({ length: 5 }, () => []);
-let completeItems = JSON.parse(localStorage.getItem('completeItems')) || Array.from({ length: 5 }, () => []);
+let checklistItems = JSON.parse(localStorage.getItem('checklistItems')) || {};
+let completeItems = JSON.parse(localStorage.getItem('completeItems')) || {};
+
+
+function getDateKey(offset = 0) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toISOString().split('T')[0]; // "2026-05-21"
+}
+dateKey = getDateKey(0);
 
 function renderChecklist() {
-
-  //Render active tasks
+  checklistItems[dateKey] = checklistItems[dateKey] || [];
+  completeItems[dateKey] = completeItems[dateKey] || [];
+  
   checklistItemsContainer.innerHTML = '';
-  checklistItems[dateIdx].forEach((item, index) => {
+  checklistItems[dateKey].forEach((item, index) => {
     const itemElement = document.createElement('div');
     itemElement.classList.add('checklist-item');
     
@@ -24,10 +32,10 @@ function renderChecklist() {
     checkbox.type = 'checkbox';
     checkbox.checked = false;
     checkbox.addEventListener('change', () => {
-      const currItem = checklistItems[dateIdx][index];
+      const currItem = checklistItems[dateKey][index];
       currItem.completed = true;
-      checklistItems[dateIdx].splice(index, 1);
-      completeItems[dateIdx].push(currItem);
+      checklistItems[dateKey].splice(index, 1);
+      completeItems[dateKey].push(currItem);
       saveChecklistItems();
       renderChecklist();
     });
@@ -39,7 +47,7 @@ function renderChecklist() {
     deleteBtn.textContent = 'x';
     deleteBtn.classList.add('delete-btn')
     deleteBtn.addEventListener('click', () => {
-      checklistItems[dateIdx].splice(index, 1); 
+      checklistItems[dateKey].splice(index, 1); 
       saveChecklistItems();
       renderChecklist();
     });
@@ -52,7 +60,7 @@ function renderChecklist() {
 
   //Render completed tasks
   completeItemsContainer.innerHTML = '';
-  completeItems[dateIdx].forEach((item, index) => {
+  completeItems[dateKey].forEach((item, index) => {
     const itemElement = document.createElement('div');
     itemElement.classList.add('complete-item');
 
@@ -60,10 +68,10 @@ function renderChecklist() {
     checkbox.type = 'checkbox';
     checkbox.checked = true;
     checkbox.addEventListener('change', () => {
-      const currItem = completeItems[dateIdx][index];
+      const currItem = completeItems[dateKey][index];
       currItem.completed = false;
-      completeItems[dateIdx].splice(index, 1);
-      checklistItems[dateIdx].push(currItem); 
+      completeItems[dateKey].splice(index, 1);
+      checklistItems[dateKey].push(currItem); 
       saveChecklistItems();
       renderChecklist();
     });
@@ -77,7 +85,7 @@ function renderChecklist() {
     deleteBtn.textContent = 'x';
     deleteBtn.classList.add('delete-btn')
     deleteBtn.addEventListener('click', () => {
-      completeItems[dateIdx].splice(index, 1);
+      completeItems[dateKey].splice(index, 1);
       saveChecklistItems();
       renderChecklist();
     });
@@ -96,7 +104,8 @@ function saveChecklistItems() {
 
 input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && input.value.trim() !== '') {
-    checklistItems[dateIdx].push({ text: input.value.trim(), completed: false });
+    checklistItems[dateKey] = checklistItems[dateKey] || [];
+    checklistItems[dateKey].push({ text: input.value.trim(), completed: false });
     input.value = '';
     input.placeholder = 'Add new task...';
     saveChecklistItems();
@@ -123,8 +132,7 @@ function renderDateOptions() {
       input.placeholder = 'Add new task...';
       dropdown.style.display = 'none';
       dateBtn.style.display = 'block';
-      dateIdx = index;
-      localStorage.setItem('selectedDateIdx', dateIdx);
+      dateKey = getDateKey(index);
       renderChecklist();
     });
   });

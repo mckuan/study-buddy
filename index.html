@@ -354,6 +354,60 @@
       margin-top: 10px;
     }
 
+    .invite-content{
+      display: none;
+      gap: 10px;
+    }
+
+    .invitation-block, .creation-block{
+      position: relative;
+      border-radius: 10px;
+      width: 80px;
+      height: 100px;
+      top: 50px;
+      left: 115px;
+      background-color: #eda3a3d7;;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.808);
+      -webkit-app-region: no-drag;
+    }
+
+    .enter-code, .create-invite{
+      position: relative;
+      width: 80%;
+      top: 20px;
+      left: 4px;
+    }
+
+    .invite-instructions, .create-instructions{
+      position: relative;
+      top: 25px;
+      left: 4px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+    }
+
+    .create-invite{
+      top: 10px;
+      left: 50%;
+      transform: translate(-50%);
+      border-radius: 5px;
+      background-color: #eda3a3;
+      width: 30px;
+      height: 30px;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: rgba(71, 36, 36, 0.676);
+      border-color: rgba(71, 36, 36, 0.676);;
+    }
+
+    .create-instructions{
+      top: 15px;
+    }
+
+    
+
     body {
       margin: 0;
       padding: 0;
@@ -378,6 +432,16 @@
         <button class = "invite-btn">invite</button>
         <button class = "timer-btn">timer</button>
         <button class = "checklist-btn">checklist</button>
+      </div>
+      <div class = "invite-content">
+        <div class = "invitation-block">
+           <input class ="enter-code" placeholder = "ABC123"/>
+           <div class="invite-instructions">Enter code from friend!</div>
+        </div>
+        <div class = "creation-block">
+          <button class="create-invite">＋</button>
+          <div class = "create-instructions" >Create a study room!</div>
+        </div>
       </div>
       <div class="timer-content">
         <button class="pause-btn">⏯</button>
