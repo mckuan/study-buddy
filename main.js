@@ -2,12 +2,9 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const { unblockWebsites, blockWebsites, getBlockingEnabled, getBlockedSites,
   setBlockingEnabled, setBlockedSites } = require('./hosts');
-let{blocksites} = require('./hosts');
 
 let win;          
 let checklistWin; 
-let settingsWin;
-
 
 function createWindow() {
   const windowState = windowStateKeeper({
@@ -32,11 +29,8 @@ function createWindow() {
   windowState.manage(win);
   win.loadFile('index.html');
   win.setIgnoreMouseEvents(false);
+  win.setAlwaysOnTop(true, 'screen-saver');
 }
-
-ipcMain.on('minimize-window', () => {
-  BrowserWindow.getFocusedWindow().minimize();
-});
 
 function createChecklistWindow() {
   const checklistState = windowStateKeeper({
@@ -63,7 +57,13 @@ function createChecklistWindow() {
   checklistState.manage(checklistWin);
   checklistWin.loadFile('checklist.html');
   checklistWin.setIgnoreMouseEvents(false);
+  checklistWin.setAlwaysOnTop(true, 'screen-saver');
 }
+
+// ── window controls ──────────────────────────────────────
+ipcMain.on('minimize-window', () => {
+  BrowserWindow.getFocusedWindow()?.minimize();
+});
 
 ipcMain.on('open-checklist', () => {
   createChecklistWindow();
@@ -77,47 +77,24 @@ ipcMain.on('close-checklist', () => {
 });
 
 ipcMain.on('focus-main-window', () => {
-  if (win) {
-    win.focus();
-  }
+  win?.focus();
 });
 
 ipcMain.on('focus-checklist-window', () => {
-  if (checklistWin) {
-    checklistWin.focus();
-  }
+  checklistWin?.focus();
 });
 
+// ── settings ─────────────────────────────────────────────
 ipcMain.on('get-blocking-enabled', (event) => {
   event.reply('blocking-enabled-state', { enabled: getBlockingEnabled() });
 });
 
-
-ipcMain.on('request-block', async (event) => {
-  try {
-    await blockWebsites();
-    event.reply('toggle-block-success');
-  } catch (err) {
-    console.error('Blocking failed:', err);
-    event.reply('toggle-block-failed', { wrongPassword: err.message === 'wrong-password' });
-  }
-});
- 
-ipcMain.on('request-unblock', async () => {
-  try {
-    await unblockWebsites();
-  } catch (err) {
-    console.error('Unblocking failed:', err);
-  }
-});
- 
-ipcMain.on('set-blocking-enabled', async (event, { enabled, sites }) => {
-  if (sites) setBlockedSites(sites);
+ipcMain.on('settings-toggle-blocking', async (event, { enabled }) => {
   const result = await setBlockingEnabled(enabled);
-  if (result === 'wrong-password') {
-    event.reply('toggle-block-failed', { wrongPassword: true });
-  } else if (result === 'cancelled') {
-    event.reply('toggle-block-failed', { wrongPassword: false });
+  if (result === 'ok') {
+    event.reply('settings-toggle-success');
+  } else {
+    event.reply('settings-toggle-failed', { wrongPassword: result === 'wrong-password' });
   }
 });
 
@@ -128,6 +105,25 @@ ipcMain.handle('get-blocked-sites', () => {
 ipcMain.on('update-blocked-sites', (event, sites) => {
   setBlockedSites(sites);
 });
- 
+
+// ── timer blocking ────────────────────────────────────────
+ipcMain.on('timer-request-block', async (event) => {
+  try {
+    await blockWebsites(true); // ✅ force block regardless of toggle
+    event.reply('timer-block-success');
+  } catch (err) {
+    console.error('Blocking failed:', err);
+    event.reply('timer-block-failed', { wrongPassword: err.message === 'wrong-password' });
+  }
+});
+
+ipcMain.on('timer-request-unblock', async () => {
+  try {
+    await unblockWebsites();
+  } catch (err) {
+    console.error('Unblocking failed:', err);
+  }
+});
+
+// ── app ───────────────────────────────────────────────────
 app.whenReady().then(createWindow);
- 

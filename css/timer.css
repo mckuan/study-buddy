@@ -1,0 +1,57 @@
+.timer-content {
+    position: absolute;
+    width: 120px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #eda3a3d7;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    color: #333;
+    flex-wrap: wrap;
+    display: none;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.timer-display {
+    width: 80px;
+    text-align: center;
+}
+
+.increment-btn, .decrement-btn, .pause-btn, .stop-btn{
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    right: 60px;
+    -webkit-app-region: no-drag;
+    align-items: center;
+    justify-content: center;
+}
+
+.decrement-btn {
+    right: 20px;
+}
+
+.start-btn {
+    -webkit-app-region: no-drag;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.pause-btn{
+    right: 60px;
+    display: none;
+}
+
+.stop-btn{
+    right: 20px;
+    display: none;
+}

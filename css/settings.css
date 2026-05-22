@@ -1,0 +1,166 @@
+.settings {
+    width: 220px;
+    height: 220px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+    border: none;
+    background: rgb(255, 255, 255);
+    position: absolute;
+    -webkit-app-region: no-drag;
+    display: none;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.blur-settings {
+    width: 220px;
+    height: 220px;
+    z-index:15;
+    border-radius: 15px;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.516);
+    display: none;
+}
+
+.settings-close{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #eda3a3;
+    z-index: 17;
+    color: black;
+}
+
+.heading{
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    -webkit-app-region: no-drag;
+}
+
+.toggle {
+    position: absolute;
+    top: 55px;
+    left: 20px;
+    display: inline-block;
+    width: 30px;
+    height: 15px;
+    -webkit-app-region: no-drag;
+}
+
+.toggle-input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #ccc;
+    border-radius: 34px;
+    transition: 0.2s;
+    -webkit-app-region: no-drag;
+}
+
+.slider::before {
+    content: '';
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    left: 1px;
+    top: 1px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+.toggle-input:checked + .slider {
+    background: #eda3a3;
+}
+
+.toggle-input:checked + .slider::before {
+    transform: translateX(15px);
+}
+
+.toggle-instructions{
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    overflow-y: auto;
+    width: 150px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+}
+
+.dropdown-button, .dropdown{
+    position: absolute;
+    width: 170px;
+    left: 20px;
+    top: 100px;
+    border: 1px solid #eda3a3;
+    border-radius: 5px;
+    background-color: transparent;
+    text-align: left;
+    font-family: 'Nunito', sans-serif;
+    -webkit-app-region: no-drag;
+}
+
+.dropdown {
+    top: 125px;
+    flex-direction: column;
+    display: none;
+    max-height: 70px;
+    border: transparent;
+    border-radius: none;
+    overflow-y: auto;
+}
+
+.site-item {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    font-size: 12px;
+    padding: 2px 0;
+}
+
+.sites{
+    position: relative;
+    top: 5px;
+    width: 100%;
+    left: 0;
+    text-align: left;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+}
+
+.delete-btn {
+    position: relative;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    margin-left: auto;
+    color: #eda3a3;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Nunito', sans-serif;
+    -webkit-app-region: no-drag;
+    padding: 0;
+}
+
+.input-text{
+    position: relative;
+    -webkit-app-region: no-drag;
+    left: 5px;
+    width: 140px;
+    text-align: left;
+    font-size: 10px;
+    padding: 4px;
+    margin-top: 10px;
+}

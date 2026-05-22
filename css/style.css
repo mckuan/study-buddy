@@ -1,0 +1,123 @@
+.frame {
+    width: 420px;
+    height: 280px;
+    background: rgba(0, 0, 0, 0.01);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    position: absolute;
+}
+
+.buttons-exit {
+    position: absolute;
+    top: 5px;
+    left: 8px;
+    display: flex;
+    gap: 5px;
+    z-index: 2; 
+}
+
+.close-btn, .minimize-btn, .settings-close {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: rgba(0,0,0,0.01);
+    padding: 0;
+}
+
+.close-btn { background: rgba(0, 0, 0, 0.01); }
+.minimize-btn { background: rgba(0, 0, 0, 0.01); }
+
+.content{
+    width: 400px;
+    height: 250px;
+    border-radius: 10px;  
+    background-image: url('../assets/main-background.png');
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    position: absolute; 
+    top: 20px; 
+    left: 10px;
+    -webkit-app-region: drag; 
+}
+
+.error-popup {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 80, 80, 0.9);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    display: none;
+    z-index: 20;
+}
+
+.blur{
+    width: 400px;
+    height: 250px;
+    border-radius: 10px;  
+    background-color: rgba(255, 255, 255, 0.319);
+    z-index: 5;
+    position: absolute; 
+    display: none;
+    -webkit-app-region: no-drag; 
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    z-index: 2;
+}
+
+.invite-btn, .timer-btn, .checklist-btn {
+    width: 60px;
+    height: 30px;
+    border-radius: 10px;
+    background: #eda3a3;
+    border: none;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.651);
+}
+
+.settings-btn {
+    width: 30px;
+    height: 30px;
+    top: 55px;
+    right: 10px;
+    border-radius: 50%;
+    border: none;
+    background: #eda3a3;
+    font-size: 18px;
+    position: absolute;
+    -webkit-app-region: no-drag;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.651);
+    cursor: pointer;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 420px;
+    height: 280px;
+    user-select: none;   
+}

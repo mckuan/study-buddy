@@ -104,7 +104,7 @@ async function revokeAdminAccess() {
   * making all blocked sites start with local host and clears dns caches
   */
 async function blockWebsites() {
-  if (!blockingEnabled) return;
+  if (!blockingEnabled && !force) return;
  
   const result = await ensureAdminAccess();
   if (result === 'cancelled'){

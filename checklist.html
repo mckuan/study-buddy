@@ -4,129 +4,8 @@
   <meta charset="UTF-8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href = "css/checklist-style.css">
   <style>
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      width: 280px;
-      height: 220px;
-      background: transparent;
-      overflow: hidden;
-      padding: 0px;
-    }
-
-    .checklist-frame {
-      width: 90%;
-      height: 100%;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-      font-family: 'Nunito', sans-serif;
-      padding: 10px;
-      padding-top: 0px;
-      -webkit-app-region: drag;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      gap: 8px;
-    }
-
-    .input-text {
-      width: 100%;
-      padding: 6px 10px;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 13px;
-      outline: none;
-      -webkit-app-region: no-drag;
-    }
-
-    .items {
-      width: 100%;
-      max-height: 120px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .checklist-items, .complete-items {
-      -webkit-app-region: no-drag;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .checklist-item, .complete-item {
-      display: flex;
-      align-items: flex-start;
-      width: 100%;
-      gap: 6px;
-    }
-
-    .checklist-item span, .complete-item span {
-      flex: 1;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .checklist-item input[type="checkbox"], .complete-item input[type="checkbox"] {
-      margin-top: 2px;
-      flex-shrink: 0;
-      -webkit-app-region: no-drag;
-      cursor: pointer;
-    }
-
-    .delete-btn {
-      flex-shrink: 0;
-      background: none;
-      border: none;
-      color: #ccc;
-      cursor: pointer;
-      font-size: 12px;
-      font-family: 'Nunito', sans-serif;
-      -webkit-app-region: no-drag;
-      padding: 0;
-    }
-
-    .date-options {
-      position: relative;
-      display: flex;
-      justify-content: center;
-    }
-
-    .date-btn, .day1, .day2, .day3, .day4, .day5 {
-      background: #eda3a3;
-      border: 1px solid #eee;
-      border-radius: 10px;
-      font-size: 12px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      -webkit-app-region: no-drag;
-    }
-
-    .date-btn, .dropdown{
-      margin: 0 auto;
-      color: #333;
-      width: 80px;
-      height: 24px;
-      -webkit-app-region: no-drag;
-      cursor: pointer;
-    }
-
-    .dropdown { 
-      top: 24px;
-      left: 50%;
-      display: none;
-      flex-direction: column;
-      z-index: 1000;
-    }
-
   </style>
 </head>
 <body>
@@ -147,6 +26,6 @@
       <div class="complete-items"></div>
     </div>
   </div>
-  <script src="checklist-render.js"></script>
+  <script src="js/checklist-render.js"></script>
 </body>
 </html>
