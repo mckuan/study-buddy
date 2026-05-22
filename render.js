@@ -21,6 +21,7 @@ const dropdown = document.querySelector('.dropdown');
 const errorPopup = document.querySelector('.error-popup');
 const settingsblur = document.querySelector('.blur-settings');
 const blockedContainer = document.querySelector('.sites'); 
+const inputContainer = document.querySelector('.input-text');
 
 let minutes = 0;
 let checklistOpen = false;
@@ -167,10 +168,14 @@ startBtn.addEventListener('click', () => {
   }
 });
 
-settingsBtn.addEventListener('click', () => {
+
+settingsBtn.addEventListener('click', async () => {
   blur.style.display = 'block';
   settings.style.display = 'block';
   ipcRenderer.send('get-blocking-enabled');
+  blockedsites = await getblockedsites(); // ✅ now works
+  dropdown.style.display = 'none';
+  renderDropdown();
 });
 
 ipcRenderer.on('blocking-enabled-state', (_, { enabled }) => {
@@ -209,7 +214,7 @@ ipcRenderer.on('toggle-block-success', () => {
 })
 
 dropdownBtn.addEventListener('click', () => {
-  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
 })
 
 async function getblockedsites(){
@@ -218,11 +223,34 @@ async function getblockedsites(){
 
 function renderDropdown(){
   blockedContainer.innerHTML = '';
-  blockedsites.forEach(site => {
+  blockedsites.forEach((site, index) => {
     const siteElement = document.createElement('div');
+    siteElement.classList.add('site-item'); 
     siteElement.textContent = site;
-    blockedContainer.appendChild(siteElement);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'x';
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.addEventListener('click', () => {
+      blockedsites.splice(index, 1);
+      localStorage.setItem('blockedsites', JSON.stringify(blockedsites));
+      ipcRenderer.send('update-blocked-sites', blockedsites);
+      renderDropdown();
+    });
+
+    siteElement.appendChild(deleteBtn);     
+    blockedContainer.appendChild(siteElement); 
   });
 }
+
+inputContainer.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && inputContainer.value.trim()) {
+    blockedsites.push(inputContainer.value.trim());
+    localStorage.setItem('blockedsites', JSON.stringify(blockedsites));
+    ipcRenderer.send('update-blocked-sites', blockedsites);
+    inputContainer.value = '';
+    renderDropdown();
+  }
+});
 
 renderDropdown();

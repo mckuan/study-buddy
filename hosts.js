@@ -6,7 +6,7 @@ const { get } = require('http');
 const keytar = require('keytar'); 
 const BLOCK_TAG = '# study-buddy-block';
 let blocksites = ['reddit.com', 'youtube.com', 
-  'twitter.com', 'facebook.com', 'instagram.com'];
+  'x.com', 'facebook.com', 'instagram.com'];
 let sudoPassword = null; 
 let blockingEnabled = store.get('blockingEnabled', false); 
  
@@ -177,6 +177,9 @@ function setBlockedSites(sites) {
   blocksites = sites;
 }
 
+function getBlockedSites(){
+  return blocksites;
+}
 function getBlockingEnabled() {
   return blockingEnabled;
 }
@@ -188,4 +191,5 @@ module.exports = {
   setBlockedSites,
   revokeAdminAccess,
   getBlockingEnabled,
+  getBlockedSites,
 };

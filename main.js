@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const windowStateKeeper = require('electron-window-state');
-const { unblockWebsites, blockWebsites, getBlockingEnabled, 
+const { unblockWebsites, blockWebsites, getBlockingEnabled, getBlockedSites,
   setBlockingEnabled, setBlockedSites } = require('./hosts');
 let{blocksites} = require('./hosts');
 
@@ -119,6 +119,14 @@ ipcMain.on('set-blocking-enabled', async (event, { enabled, sites }) => {
   } else if (result === 'cancelled') {
     event.reply('toggle-block-failed', { wrongPassword: false });
   }
+});
+
+ipcMain.handle('get-blocked-sites', () => {
+  return getBlockedSites();
+});
+
+ipcMain.on('update-blocked-sites', (event, sites) => {
+  setBlockedSites(sites);
 });
  
 app.whenReady().then(createWindow);
