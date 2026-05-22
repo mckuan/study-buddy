@@ -4,20 +4,23 @@ const completeItemsContainer = document.querySelector('.complete-items');
 const dateBtn = document.querySelector('.date-btn');
 const dropdown = document.querySelector('.dropdown');
 const date = new Date();
-let dateKey;
+let dateKey = getDateKey(0);
 
 dateBtn.textContent = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ▾';
 
 let checklistItems = JSON.parse(localStorage.getItem('checklistItems')) || {};
 let completeItems = JSON.parse(localStorage.getItem('completeItems')) || {};
-
+console.log('loaded:', checklistItems);
 
 function getDateKey(offset = 0) {
   const d = new Date();
   d.setDate(d.getDate() + offset);
-  return d.toISOString().split('T')[0]; // "2026-05-21"
+  // Use local date parts instead of ISO string (which is UTC)
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
 }
-dateKey = getDateKey(0);
 
 function renderChecklist() {
   checklistItems[dateKey] = checklistItems[dateKey] || [];
@@ -101,6 +104,7 @@ function saveChecklistItems() {
   localStorage.setItem('checklistItems', JSON.stringify(checklistItems));
   localStorage.setItem('completeItems', JSON.stringify(completeItems));
 }
+
 
 input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && input.value.trim() !== '') {
