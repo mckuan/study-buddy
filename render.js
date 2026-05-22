@@ -22,12 +22,16 @@ const errorPopup = document.querySelector('.error-popup');
 const settingsblur = document.querySelector('.blur-settings');
 const blockedContainer = document.querySelector('.sites'); 
 const inputContainer = document.querySelector('.input-text');
+const pause = document.querySelector('.pause-btn');
+const stop = document.querySelector('.stop-btn');
 
 let minutes = 0;
+let isPaused = false;
+let timerInterval = null;
+let remainingTime = 0;
 let checklistOpen = false;
 let holdInterval = null;
-let blockedsites = JSON.parse(localStorage.getItem('blockedsites')) || 
-['reddit.com', 'youtube.com', 'twitter.com', 'facebook.com', 'instagram.com'];
+let blockedsites = [];
 
 frame.addEventListener('mouseover', (e) => {
   if (e.target === frame) {
@@ -140,23 +144,45 @@ function formatTimewithSeconds(seconds) {
   return `${mins}:${secs}`;
 }
 
-function startTimer() {
+function startTimer(startFrom = minutes * 60) {
   settingsblur.style.display = 'block';
-  let remainingTime = minutes * 60; 
+  remainingTime = startFrom; 
   timerDisplay.textContent = formatTimewithSeconds(remainingTime);
-  const timerInterval = setInterval(() => {
+  timerInterval = setInterval(() => {
     remainingTime -= 1;
     timerDisplay.textContent = formatTimewithSeconds(remainingTime);
     if (remainingTime <= 0) {
-      ipcRenderer.send('request-unblock');
-      clearInterval(timerInterval);
-      settingsblur.style.display = 'none';
-      timerDisplay.textContent = '00:00';
-      incrementBtn.style.display = 'flex';
-      decrementBtn.style.display = 'flex';
-      startBtn.style.display = 'flex';
+      stopTimer();
     }
   }, 1000);
+}
+
+function pauseTimer(){
+  if (isPaused){
+    ipcRenderer.send('request-block');
+    startTimer(remainingTime);
+    isPaused = false;
+    pause.textContent = '⏸';
+  } else {
+    ipcRenderer.send('request-unblock');
+    clearInterval(timerInterval);
+    isPaused = true;
+    pause.textContent = '▶';
+  }
+}
+
+function stopTimer(){
+  clearInterval(timerInterval);
+  remainingTime = 0;
+  isPaused = false;
+  ipcRenderer.send('request-unblock');
+  settingsblur.style.display = 'none';
+  timerDisplay.textContent = '00:00';
+  incrementBtn.style.display = 'flex';
+  decrementBtn.style.display = 'flex';
+  pause.style.display = 'none';
+  stop.style.display = 'none';
+  startBtn.style.display = 'flex';
 }
 
 startBtn.addEventListener('click', () => {
@@ -164,16 +190,17 @@ startBtn.addEventListener('click', () => {
     ipcRenderer.send('request-block');
     incrementBtn.style.display = 'none';
     decrementBtn.style.display = 'none';
+    pause.style.display = 'flex';
+    stop.style.display = 'flex';
     startBtn.style.display = 'none';
   }
 });
-
 
 settingsBtn.addEventListener('click', async () => {
   blur.style.display = 'block';
   settings.style.display = 'block';
   ipcRenderer.send('get-blocking-enabled');
-  blockedsites = await getblockedsites(); // ✅ now works
+  blockedsites = await getblockedsites(); 
   dropdown.style.display = 'none';
   renderDropdown();
 });
@@ -252,5 +279,13 @@ inputContainer.addEventListener('keydown', (e) => {
     renderDropdown();
   }
 });
+
+pause.addEventListener('click', () => {
+  pauseTimer();
+})
+
+stop.addEventListener('click', () => {
+  stopTimer();
+})
 
 renderDropdown();

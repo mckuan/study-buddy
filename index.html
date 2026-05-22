@@ -128,7 +128,7 @@
       text-align: center;
     }
 
-    .increment-btn, .decrement-btn{
+    .increment-btn, .decrement-btn, .pause-btn ,.stop-btn{
       width: 20px;
       height: 20px;
       border-radius: 10px;
@@ -153,6 +153,17 @@
       justify-content: center;
       margin: 0 auto;
     }
+
+    .pause-btn{
+      right: 60px;
+      display: none;
+    }
+
+    .stop-btn{
+      right: 20px;
+      display: none;
+    }
+
 
     .settings-btn {
       width: 30px;
@@ -293,6 +304,7 @@
       display: none;
       max-height: 70px;
       border: transparent;
+      border-radius: none;
       overflow-y: auto;
     }
 
@@ -334,9 +346,10 @@
     .input-text{
       position: relative;
       -webkit-app-region: no-drag;
+      left: 5px;
       width: 140px;
       text-align: left;
-      font-size: 12px;
+      font-size: 10px;
       padding: 4px;
       margin-top: 10px;
     }
@@ -367,9 +380,11 @@
         <button class = "checklist-btn">checklist</button>
       </div>
       <div class="timer-content">
+        <button class="pause-btn">⏯</button>
         <button class = "increment-btn">+</button>
         <div class="timer-display"></div>
         <button class = "decrement-btn">-</button>
+        <button class="stop-btn">⏹</button>
         <button class="start-btn">start</button>
       </div>
       <button class="settings-btn">⚙</button>

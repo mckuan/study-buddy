@@ -5,8 +5,8 @@ const fs = require('fs');
 const { get } = require('http');
 const keytar = require('keytar'); 
 const BLOCK_TAG = '# study-buddy-block';
-let blocksites = ['reddit.com', 'youtube.com', 
-  'x.com', 'facebook.com', 'instagram.com'];
+let blocksites = store.get('blockedsites', ['reddit.com', 'youtube.com', 
+  'x.com', 'facebook.com', 'instagram.com']);
 let sudoPassword = null; 
 let blockingEnabled = store.get('blockingEnabled', false); 
  
@@ -175,6 +175,7 @@ async function setBlockingEnabled(enabled) {
  
 function setBlockedSites(sites) {
   blocksites = sites;
+  store.set('blockedsites', sites);
 }
 
 function getBlockedSites(){
