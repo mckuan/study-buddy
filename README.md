@@ -1,51 +1,76 @@
 # Study Buddy
 
-A cozy desktop productivity app built with Electron focused on helping students stay organized, focused, and motivated while studying.
+A cozy desktop productivity companion built with Electron.
 
-## Overview
+Study Buddy is designed to make studying feel calmer, more intentional, and less overwhelming through a relaxing desktop experience focused on focus sessions, task organization, and distraction reduction.
 
-Study Buddy is a desktop application designed around a calming and cozy workspace experience. The app currently includes a multi-day task management system, persistent checklists, multiple desktop windows, and a custom aesthetic UI.
+---
 
-The goal of the project is to evolve into a full study companion platform with:
+# Preview
 
-* task planning
-* focus sessions
-* website blocking
-* collaborative study rooms
-* social productivity features
+## Main Workspace
 
-## Current Features
+* Cozy transparent desktop interface
+* Lightweight floating window design
+* Custom productivity-focused UI
+* Designed around relaxing study aesthetics
 
-### Multi-Day Task Planning
+## Checklist Window
+
+* Persistent multi-day task management
+* Date-based organization system
+* Independent task storage for each day
+* Fast lightweight workflow
+
+---
+
+# Features
+
+## Multi-Day Task Planning
 
 * Plan tasks up to 5 days in advance
-* Today's checklist is shown by default
-* Switch between dates using the date selector
-* Each day stores its own independent checklist
+* Quickly switch between dates
+* Separate checklist data for each day
+* Automatically loads today's tasks by default
 
-### Persistent Task System
+## Persistent Checklist System
 
-* Tasks are saved using `localStorage`
-* Completed tasks persist between sessions
-* Checklist state remains after closing the app
+* Tasks persist between sessions
+* Completion state is saved automatically
+* Local storage system for lightweight persistence
+* Designed for fast everyday usage
 
-### Desktop App Architecture
+## Website Blocking System
+
+* Experimental focus mode website blocker
+* Host-file based blocking implementation
+* Temporary distraction reduction workflow
+* Built using Node.js child process execution
+
+## Desktop Application Architecture
 
 Built with Electron using:
 
-* main/renderer process separation
+* Main / renderer process architecture
 * IPC communication
-* frameless transparent windows
-* persistent window positions and sizing
+* Frameless transparent windows
+* Persistent window state
+* Native desktop behaviors
+* Multiple application windows
 
-### Cozy UI / Visual Design
+## Cozy Productivity UI
 
-* Minimal cozy productivity aesthetic
+* Relaxed visual design
 * Transparent desktop windows
-* Custom styling and layout
-* Inspired by relaxing study environments
+* Minimal interface clutter
+* Soft productivity-focused atmosphere
+* Inspired by cozy study spaces and ambient productivity apps
 
-## Tech Stack
+---
+
+# Tech Stack
+
+## Core Technologies
 
 * Electron
 * JavaScript
@@ -53,112 +78,192 @@ Built with Electron using:
 * CSS
 * Node.js
 
-## Project Structure
+## Libraries & Packages
+
+* electron-window-state
+* electron-store
+* keytar
+
+---
+
+# Project Goals
+
+Study Buddy started as a personal learning project and is gradually evolving into a larger productivity platform.
+
+The long-term goal is to create a study environment that feels:
+
+* calming instead of overwhelming
+* personal instead of corporate
+* visually motivating
+* lightweight and distraction-free
+
+Rather than functioning as only a task manager, the app is intended to feel more like a desktop study companion.
+
+---
+
+# Planned Features
+
+## Focus Timer System
+
+* Pomodoro timer
+* Focus / break cycles
+* Session tracking
+* Focus statistics
+* Study hour analytics
+
+## Collaborative Study Rooms
+
+* Joinable room codes
+* Shared focus sessions
+* Real-time room synchronization
+* Friends appearing in workspace environments
+
+## Productivity Analytics
+
+* Focus streaks
+* Weekly summaries
+* Time tracking
+* Completed task analytics
+
+## Personalization
+
+* Themes
+* Custom backgrounds
+* Ambient sounds
+* Customizable workspace layouts
+
+## Future Expansion
+
+* Cloud synchronization
+* Cross-device syncing
+* Calendar integration
+* AI study assistant concepts
+
+---
+
+# Architecture Notes
+
+Current architecture includes:
 
 ```txt
 study-buddy/
 ├── main.js
-├── preload.js
-├── renderer.js
-├── checklist.js
+├── render.js
+├── checklist-render.js
+├── hosts.js
+├── index.html
+├── checklist.html
 ├── package.json
-├── styles/
-├── assets/
-└── windows/
+└── assets
 ```
 
-## Current State
+The project is currently being refactored toward a more modular structure as development continues.
 
-This project is currently in active development.
+---
 
-The app is functioning as an early MVP/prototype and is focused on:
+# Installation
 
-* improving productivity workflows
-* refining the user experience
-* expanding study-focused features
-* improving desktop app architecture
-
-## Planned Features
-
-### Focus Timer
-
-* Pomodoro-style study timer
-* Focus session tracking
-* Break reminders
-* Session persistence
-
-### Website Blocking
-
-* Temporary website blocking during study sessions
-* Focus mode integration
-* Productivity lock system
-
-### Shared Study Rooms
-
-* Join study rooms using room codes
-* Friends appear inside your workspace
-* Real-time synced study sessions
-* Collaborative productivity environment
-
-### Future Ideas
-
-* Study analytics
-* Streak tracking
-* Ambient sounds
-* Themes/customization
-* Calendar integration
-* Cloud sync
-
-## Installation
+## Clone Repository
 
 ```bash
 git clone <repo-url>
 cd study-buddy
-npm install
-npm start
 ```
 
-## Development
+## Install Dependencies
 
-Run the application:
+```bash
+npm install
+```
+
+## Run Application
 
 ```bash
 npm start
 ```
 
-## Skills & Concepts Learned
+---
 
-This is my first major portfolio project while officially learning JavaScript and HTML.
+# Current Development Focus
 
-Through building Study Buddy, I have been learning and applying concepts such as:
+The current development phase is focused on:
 
-* Electron desktop app architecture
+* improving application architecture
+* expanding productivity systems
+* improving state management
+* polishing desktop UX
+* modularizing the codebase
+* improving Electron security practices
+
+---
+
+# What I Learned From This Project
+
+Study Buddy is my first major long-term software project while learning JavaScript and desktop application development.
+
+Through building this application, I have been learning:
+
+* Electron desktop architecture
 * Main vs renderer processes
-* IPC communication
-* Preload security bridges
+* IPC communication systems
 * DOM manipulation
-* DOM synchronization
 * State management
-* Persistent storage with localStorage
-* Multi-window desktop applications
-* Dynamic rendering systems
-* Event listeners and UI interactions
-* Data modeling for scalable features
-* Application structure and organization
-* User experience focused design
-* Real-time architecture planning
-* Performance considerations and bottlenecks
+* Persistent storage systems
+* Multi-window application design
+* Async JavaScript workflows
+* File system interactions
+* OS-level process execution
+* UI/UX focused design thinking
+* Software project organization
+* Iterative product development
 
-The project is being built iteratively as both a learning experience and a long-term portfolio piece.
+This project is being developed incrementally as both:
 
-## Why This Project Exists
+* a learning experience
+* a long-term portfolio project
+* an exploration of productivity software design
 
-A lot of productivity tools feel overly corporate or cluttered.
+---
 
-Study Buddy is designed to feel calmer, more personal, and more motivating — something closer to a cozy digital study companion than a traditional task manager.
+# Why I Built This
 
-## Status
+A lot of productivity software feels overly corporate, cluttered, or stressful.
 
-Currently under active development.
+I wanted to build something that feels softer and more motivating — a study environment that people actually enjoy opening every day.
 
-Built as an independent learning + portfolio project.
+Study Buddy combines:
+
+* productivity tools
+* cozy visual design
+* desktop utility features
+* lightweight workflows
+
+into a more personal studying experience.
+
+---
+
+# Current Status
+
+Currently in active development.
+
+This project is still evolving rapidly and many systems are experimental or being redesigned as I continue learning and improving the application.
+
+---
+
+# Future Improvements
+
+Planned technical improvements include:
+
+* cleaner modular architecture
+* preload-based Electron security improvements
+* improved persistence systems
+* better performance optimization
+* packaged desktop builds
+* automated testing
+* scalable state management
+
+---
+
+# License
+
+MIT License
