@@ -17,6 +17,8 @@ function generateCode() {
 io.on('connection', (socket) => {
   console.log('user connected:', socket.id);
 
+  //when user creates room we generate a code as a key to look up room object data
+  // we add member array and message array to room add user to this room
   socket.on('create-room', ({ name }) => {
     const code = generateCode();
     rooms[code] = {
@@ -27,6 +29,7 @@ io.on('connection', (socket) => {
     socket.emit('room-created', { code });
   });
 
+  //when user clicks join room, if code is correct user enters room
   socket.on('join-room', ({ code, name }) => {
     const room = rooms[code.toUpperCase()];
     if (!room) {
@@ -43,6 +46,8 @@ io.on('connection', (socket) => {
     socket.to(code.toUpperCase()).emit('member-joined', { name });
   });
 
+  //when user sends message, label the message with the user name and time, and 
+  //broadcast to the room
   socket.on('send-message', ({ code, name, text }) => {
     const message = { name, text, timestamp: Date.now() };
     if (rooms[code]) {
@@ -51,17 +56,19 @@ io.on('connection', (socket) => {
     }
   });
 
+  // finds room through code, removes user by matching their socket id,
+  // notifies others, if no one left delete the room
   socket.on('leave-room', ({ code, name }) => {
     const room = rooms[code];
     if (!room) return;
     room.members = room.members.filter(m => m.id !== socket.id);
     socket.leave(code);
     socket.to(code).emit('member-left', { name });
-    if (room.members.length === 0) {
-      delete rooms[code];
-    }
+    if (room.members.length === 0) delete rooms[code];
   });
 
+  // when user disconnects unexpectedly, loop through all rooms to find 
+  // which room they were in, remove them, notify others, delete room if empty
   socket.on('disconnect', () => {
     Object.keys(rooms).forEach(code => {
       const room = rooms[code];

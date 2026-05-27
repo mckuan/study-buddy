@@ -29,13 +29,8 @@ let isResuming = false;
 // ---------------- OPEN TIMER ----------------
 
 timerbutton.addEventListener('click', () => {
-  timerContent.style.display =
-    timerContent.style.display === 'flex'
-      ? 'none'
-      : 'flex';
-
+  timerContent.style.display = timerContent.style.display === 'flex' ? 'none' : 'flex';
   minutes = 0;
-
   timerDisplay.textContent = formatTime(minutes);
 });
 

@@ -1,4 +1,5 @@
 .invite-content{
+    position: absolute;
     display: none;
     gap: 10px;
     -webkit-app-region: no-drag;

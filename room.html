@@ -8,15 +8,21 @@
 </head>
 <body>
   <div class="room-frame">
-    <div class="room-header">
-      <span class="room-code"></span>
+    <div class="room-code"></div>
+    <div class="members-list" style="display:none"></div>
+    <div class="buttons">
+      <div class="leaderboard-row">
+        <button class="focus-mode">⏾</button>
+        <button class="leaderboard">leaderboard</button>
+      </div>  
+      <button class="chat-btn">chat</button>   
       <button class="leave-btn">leave</button>
     </div>
-    <div class="members-list"></div>
-    <div class="chat-messages"></div>
-    <div class="chat-input-row">
-      <input class="chat-input" placeholder="say something...">
-      <button class="send-btn">send</button>
+    <div class="chat">  
+      <div class="chat-messages"></div>
+      <div class="chat-input-row">
+        <input class="chat-input" placeholder="say something...">
+      </div>
     </div>
   </div>
   <script src="js/room.js"></script>

@@ -5,6 +5,9 @@ const { unblockWebsites, blockWebsites, getBlockingEnabled, getBlockedSites,
 
 let win;          
 let checklistWin; 
+let roomWin;
+
+// ── window creation ───────────────────────────────────────
 
 function createWindow() {
   const windowState = windowStateKeeper({
@@ -60,7 +63,36 @@ function createChecklistWindow() {
   checklistWin.setAlwaysOnTop(true, 'screen-saver');
 }
 
-// ── window controls ──────────────────────────────────────
+function createRoomWindow(x, y, name, code, creator) {
+  roomWin = new BrowserWindow({
+    x,
+    y,
+    width: 400,
+    height: 250,
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  const params = new URLSearchParams({ name, code: code || '', creator });
+  roomWin.loadFile('room.html', { search: params.toString() });
+  roomWin.setIgnoreMouseEvents(false);
+  roomWin.setAlwaysOnTop(true, 'screen-saver');
+
+  roomWin.on('closed', () => {
+    win.setPosition(x, y);
+    win.show();
+    roomWin = null;
+  });
+}
+
+// ── window controls ───────────────────────────────────────
+
 ipcMain.on('minimize-window', () => {
   BrowserWindow.getFocusedWindow()?.minimize();
 });
@@ -84,7 +116,20 @@ ipcMain.on('focus-checklist-window', () => {
   checklistWin?.focus();
 });
 
-// ── settings ─────────────────────────────────────────────
+ipcMain.on('open-room', (event, { name, code, creator }) => {
+  const [x, y] = win.getPosition();
+  win.hide();
+  createRoomWindow(x, y, name, code, creator);
+});
+
+ipcMain.on('leave-room', () => {
+  if (roomWin && !roomWin.isDestroyed()) {
+    roomWin.close();
+  }
+});
+
+// ── settings ──────────────────────────────────────────────
+
 ipcMain.on('get-blocking-enabled', (event) => {
   event.reply('blocking-enabled-state', { enabled: getBlockingEnabled() });
 });
@@ -106,10 +151,11 @@ ipcMain.on('update-blocked-sites', (event, sites) => {
   setBlockedSites(sites);
 });
 
-// ── timer blocking ────────────────────────────────────────
+// ── timer blocking ─────────────────────────────────────────
+
 ipcMain.on('timer-request-block', async (event) => {
   try {
-    await blockWebsites(true); // ✅ force block regardless of toggle
+    await blockWebsites(true);
     event.reply('timer-block-success');
   } catch (err) {
     console.error('Blocking failed:', err);
@@ -126,4 +172,5 @@ ipcMain.on('timer-request-unblock', async () => {
 });
 
 // ── app ───────────────────────────────────────────────────
+
 app.whenReady().then(createWindow);
