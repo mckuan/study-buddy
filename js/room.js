@@ -13,24 +13,20 @@ const chat = document.querySelector('.chat');
 const leaderboardBtn = document.querySelector('.leaderboard');
 const leaderboard = document.querySelector('.leaderboard-content');
 const ranking = document.querySelector('.ranking');
+const focus = document.querySelector('.focus-mode');
 
 // get name and code passed from invite window
 const params = new URLSearchParams(window.location.search);
 const name = params.get('name');
 const isCreator = params.get('creator') === 'true';
-const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
-
 
 let currentCode = params.get('code') || '';
-let charCount = 0;
+let focusClicked = false;
+let studyInterval = null;
+let studyTime = 0;
 
-roomCode.textContent = 'TEST';
+// ── socket connection ─────────────────────────────────────
 
-console.log('name:', name);
-console.log('isCreator:', isCreator);
-console.log('currentCode:', currentCode);
-
-// connect to room
 socket.on('connect', () => {
   console.log('socket connected!');
   if (isCreator) {
@@ -71,16 +67,24 @@ socket.on('error', ({ message }) => {
   addMessage('', `❌ ${message}`);
 });
 
-chatBtn.addEventListener('click', ()=>{
+socket.on('leaderboard-update', (entries) => {
+  renderLeaderBoard(entries.map(e => ({
+    name: e.name,
+    studyTime: Math.floor(e.studyTime / 60)
+  })));
+});
+
+// ── chat ──────────────────────────────────────────────────
+
+chatBtn.addEventListener('click', () => {
   chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
   leaderboard.style.display = 'none';
-})
+});
 
-leaderboardBtn.addEventListener('click', ()=>{
-  leaderboard.style.display = leaderboard.style.display ===
-  'flex' ? 'none' : 'flex';
+leaderboardBtn.addEventListener('click', () => {
+  leaderboard.style.display = leaderboard.style.display === 'flex' ? 'none' : 'flex';
   chat.style.display = 'none';
-})
+});
 
 chatInput.addEventListener('input', () => {
   if (chatInput.value.length > 500) {
@@ -102,11 +106,37 @@ function sendMessage() {
   chatInput.value = '';
 }
 
-// leave room
+// ── leave room ────────────────────────────────────────────
+
 leaveBtn.addEventListener('click', () => {
   socket.emit('leave-room', { code: currentCode, name });
+  ipcRenderer.send('timer-request-unblock');
   ipcRenderer.send('leave-room');
 });
+
+// ── focus mode ────────────────────────────────────────────
+
+focus.addEventListener('click', () => {
+  if (focusClicked) {
+    focus.style.backgroundColor = '#eda3a3';
+    focusClicked = false;
+    clearInterval(studyInterval);
+    studyInterval = null;
+    ipcRenderer.send('timer-request-unblock');
+  } else {
+    focus.style.backgroundColor = '#7379e2';
+    focusClicked = true;
+    ipcRenderer.send('timer-request-block');
+    studyInterval = setInterval(() => {
+      studyTime++;
+      const mins = Math.floor(studyTime / 60);
+      const secs = studyTime % 60;
+      renderLeaderBoard([{ name, display: `${mins}m ${secs}s` }]);
+    }, 1000);
+  }
+});
+
+// ── helpers ───────────────────────────────────────────────
 
 function addMember(name) {
   const div = document.createElement('div');
@@ -129,21 +159,15 @@ function addMessage(name, text) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-socket.on('leaderboard-update', (leaderboard) => {
-  // render it however you want
-  leaderboard.forEach((entry, i) => {
-    console.log(`${i + 1}. ${entry.name} — ${Math.floor(entry.studyTime / 1000)}s`);
-  });
-});
-
 function renderLeaderBoard(entries) {
   ranking.innerHTML = '';
   entries.forEach((entry, i) => {
     const div = document.createElement('div');
     div.classList.add('leaderboard-entry');
-    div.textContent = `${i + 1}. ${entry.name} — ${entry.studyTime}min`;
+    div.textContent = `${i + 1}. ${entry.name} — ${entry.display ?? entry.studyTime + 'min'}`;
     ranking.appendChild(div);
   });
 }
 
-renderLeaderBoard([{ name, studyTime: 0 }]);
+// ── init ──────────────────────────────────────────────────
+renderLeaderBoard([{ name, display: '0m 0s' }]);
