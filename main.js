@@ -151,6 +151,16 @@ ipcMain.on('update-blocked-sites', (event, sites) => {
   setBlockedSites(sites);
 });
 
+ipcMain.on('toggle-always-on-top', (event, { enabled }) => {
+  if (enabled) {
+    win.setAlwaysOnTop(true, 'screen-saver');
+    win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  } else {
+    win.setAlwaysOnTop(false);
+    win.setVisibleOnAllWorkspaces(false);
+  }
+});
+
 // ── timer blocking ─────────────────────────────────────────
 
 ipcMain.on('timer-request-block', async (event) => {

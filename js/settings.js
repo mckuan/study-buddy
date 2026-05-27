@@ -2,7 +2,8 @@ const settingsBtn = document.querySelector('.settings-btn');
 const settings = document.querySelector('.settings');
 const blur = document.querySelector('.blur');
 const closesettings = document.querySelector('.settings-close');
-const toggle = document.querySelector('.toggle-input');
+const blockingToggle = document.querySelector('#allow-blocking');
+const alwaysOnTopToggle = document.querySelector('#always-on-top');
 const dropdownBtn = document.querySelector('.dropdown-button');
 const dropdown = document.querySelector('.dropdown');
 const errorPopup = document.querySelector('.error-popup');
@@ -26,22 +27,32 @@ closesettings.addEventListener('click', () => {
   settings.style.display = 'none';
 });
 
-ipcRenderer.on('blocking-enabled-state', (_, { enabled }) => {
-  toggle.checked = enabled;
+// ---------------- ALWAYS ON TOP ----------------
+
+alwaysOnTopToggle.checked = true;
+
+alwaysOnTopToggle.addEventListener('change', () => {
+  ipcRenderer.send('toggle-always-on-top', { enabled: alwaysOnTopToggle.checked });
 });
 
-toggle.addEventListener('change', () => {
+// ---------------- BLOCKING ----------------
+
+ipcRenderer.on('blocking-enabled-state', (_, { enabled }) => {
+  blockingToggle.checked = enabled;
+});
+
+blockingToggle.addEventListener('change', () => {
   ipcRenderer.send('settings-toggle-blocking', {
-    enabled: toggle.checked
+    enabled: blockingToggle.checked
   });
 });
 
 ipcRenderer.on('settings-toggle-success', () => {
-  toggle.checked = true;
+  blockingToggle.checked = true;
 });
 
 ipcRenderer.on('settings-toggle-failed', (_, { wrongPassword }) => {
-  toggle.checked = false;
+  blockingToggle.checked = false;
   if (wrongPassword) {
     errorPopup.style.display = 'block';
     setTimeout(() => errorPopup.style.display = 'none', 3000);

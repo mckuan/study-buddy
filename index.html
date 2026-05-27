@@ -15,42 +15,53 @@
       <button class="minimize-btn">-</button>
     </div>
     <div class="content">
-      <div class="error-popup">Incorrect password</div>
-      <div class="blur" ></div>
+      <div class="blur"></div>
       <div class="buttons">
-        <button class = "invite-btn">invite</button>
-        <button class = "timer-btn">timer</button>
-        <button class = "checklist-btn">checklist</button>
+        <button class="invite-btn">invite</button>
+        <button class="timer-btn">timer</button>
+        <button class="checklist-btn">checklist</button>
       </div>
-      <div class = "invite-content">
-        <div class = "invitation-block">
-           <input class ="enter-code" placeholder = "ABC123"/>
-           <div class="invite-instructions">Enter code from friend!</div>
+      <div class="invite-content">
+        <div class="invitation-block">
+          <input class="enter-code" placeholder="ABC123"/>
+          <div class="invite-instructions">Enter code from friend!</div>
         </div>
-        <div class = "creation-block">
+        <div class="creation-block">
           <button class="create-invite">＋</button>
-          <div class = "create-instructions" >Create a study room!</div>
+          <div class="create-instructions">Create a study room!</div>
         </div>
       </div>
       <div class="timer-content">
         <button class="pause-btn">⏸</button>
-        <button class = "increment-btn">+</button>
+        <button class="increment-btn">+</button>
         <div class="timer-display"></div>
-        <button class = "decrement-btn">-</button>
+        <button class="decrement-btn">-</button>
         <button class="stop-btn">⏹</button>
         <button class="start-btn">start</button>
       </div>
       <button class="settings-btn">⚙</button>
-      <div class="settings">  
+      <div class="settings">
         <div class="blur-settings"></div>
         <button class="settings-close">x</button>
         <div class="heading">Settings</div>
-        <label class="toggle">
-          <input type="checkbox" class="toggle-input">
-          <span class="slider"></span>
-        </label>
-        <div class="toggle-instructions">Allow Studybuddy to block certain websites</div>
-        <button class="dropdown-button">  Blocked Sites ▾</button>
+        <div class="error-popup">Incorrect password</div>
+        <div class="toggles">
+          <div class="toggle-row">
+            <label class="toggle">
+              <input type="checkbox" class="toggle-input" id="always-on-top" checked>
+              <span class="slider"></span>
+            </label>
+            <div class="toggle-instructions">Always show Studybuddy</div>
+          </div>
+          <div class="toggle-row">
+            <label class="toggle">
+              <input type="checkbox" class="toggle-input" id="allow-blocking">
+              <span class="slider"></span>
+            </label>
+            <div class="toggle-instructions">Allow Studybuddy to block certain websites</div>
+          </div>
+        </div>
+        <button class="dropdown-button">Blocked Sites ▾</button>
         <div class="dropdown">
           <div class="sites"></div>
           <input class="input-text" placeholder="Domain name ex: youtube.com"/>
@@ -62,6 +73,5 @@
   <script src="js/timer.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/invite.js"></script>
-  
 </body>
 </html>
