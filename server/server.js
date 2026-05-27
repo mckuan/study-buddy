@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
   socket.on('create-room', ({ name }) => {
     const code = generateCode();
     rooms[code] = {
-      members: [{ id: socket.id, name }],
+      members: [{ id: socket.id, name, studyTime: 0, focusStart: null }],
       messages: []
     };
     socket.join(code);
@@ -80,8 +80,30 @@ io.on('connection', (socket) => {
       }
     });
   });
+
+  socket.on('focus-start', ({ code }) => {
+  const room = rooms[code];
+  if (!room) return;
+  const member = room.members.find(m => m.id === socket.id);
+  if (member) member.focusStart = Date.now();
 });
 
+socket.on('focus-stop', ({ code }) => {
+  const room = rooms[code];
+  if (!room) return;
+  const member = room.members.find(m => m.id === socket.id);
+  if (member && member.focusStart) {
+    member.studyTime += Date.now() - member.focusStart;
+    member.focusStart = null;
+    // broadcast updated leaderboard
+    const leaderboard = room.members
+      .map(m => ({ name: m.name, studyTime: m.studyTime }))
+      .sort((a, b) => b.studyTime - a.studyTime);
+    io.to(code).emit('leaderboard-update', leaderboard);
+  }
+});
+
+});
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);

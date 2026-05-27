@@ -10,6 +10,9 @@ const chatInput = document.querySelector('.chat-input');
 const leaveBtn = document.querySelector('.leave-btn');
 const chatBtn = document.querySelector('.chat-btn');
 const chat = document.querySelector('.chat');
+const leaderboardBtn = document.querySelector('.leaderboard');
+const leaderboard = document.querySelector('.leaderboard-content');
+const ranking = document.querySelector('.ranking');
 
 // get name and code passed from invite window
 const params = new URLSearchParams(window.location.search);
@@ -70,11 +73,18 @@ socket.on('error', ({ message }) => {
 
 chatBtn.addEventListener('click', ()=>{
   chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+  leaderboard.style.display = 'none';
+})
+
+leaderboardBtn.addEventListener('click', ()=>{
+  leaderboard.style.display = leaderboard.style.display ===
+  'flex' ? 'none' : 'flex';
+  chat.style.display = 'none';
 })
 
 chatInput.addEventListener('input', () => {
   if (chatInput.value.length > 500) {
-    chatInput.value = chatInput.value.substring(0, 200);
+    chatInput.value = chatInput.value.substring(0, 500);
   }
 });
 
@@ -118,3 +128,22 @@ function addMessage(name, text) {
   chatMessages.appendChild(div);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+
+socket.on('leaderboard-update', (leaderboard) => {
+  // render it however you want
+  leaderboard.forEach((entry, i) => {
+    console.log(`${i + 1}. ${entry.name} — ${Math.floor(entry.studyTime / 1000)}s`);
+  });
+});
+
+function renderLeaderBoard(entries) {
+  ranking.innerHTML = '';
+  entries.forEach((entry, i) => {
+    const div = document.createElement('div');
+    div.classList.add('leaderboard-entry');
+    div.textContent = `${i + 1}. ${entry.name} — ${entry.studyTime}min`;
+    ranking.appendChild(div);
+  });
+}
+
+renderLeaderBoard([{ name, studyTime: 0 }]);
