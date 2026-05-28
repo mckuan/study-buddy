@@ -15,6 +15,7 @@ invite.addEventListener('click', () => {
 // ---------------- CREATE ROOM ----------------
 
 createInvite.addEventListener('click', () => {
+  console.log('create room clicked');
   ipcRenderer.send('open-room', {
     name: userName,
     creator: true,

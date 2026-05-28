@@ -22,7 +22,7 @@ const sleepFrames = [
 
 const SLEEP_LOOP_START = 9;  // f10
 const SLEEP_LOOP_END = 13;   // f14
-const SLEEP_LOOP_COUNT = 10;
+const SLEEP_LOOP_COUNT = 20;
 
 function sleepSequence(loopCount = SLEEP_LOOP_COUNT) {
   const intro = sleepFrames.slice(0, SLEEP_LOOP_START);

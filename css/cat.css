@@ -1,11 +1,16 @@
 .cat-container {
   position: absolute;
-  z-index: 9999;
-  width: 220px;
-  height: 220px;
-  left: 100px;
-  top: 130px; 
+  z-index: 3;
+  width: 150px;
+  height: 150px;
+  left: 180px;
+  bottom: 70px;
+  -webkit-app-region: no-drag;
+  pointer-events: none;
 }
+/*idle 150,150,180,70(bottom)
+* sleep 220, 220, 150, 150(top)
+*/
 
 .cat-frame-1,
 .cat-frame-2 {

@@ -24,10 +24,10 @@ function initCat() {
   activeLayer = img1;
   inactiveLayer = img2;
  
-  playAnimation(sleepSequence());
+  playAnimation(idleSequence());
 }
  
-function playAnimation(sequence, fps = 150) {
+function playAnimation(sequence, fps = 180) {
   if (animationInterval) clearInterval(animationInterval);
   currentFrame = 0;
  

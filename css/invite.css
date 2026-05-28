@@ -3,6 +3,7 @@
     display: none;
     gap: 10px;
     -webkit-app-region: no-drag;
+    z-index: 10;
 }
 
 .invitation-block, .creation-block{
