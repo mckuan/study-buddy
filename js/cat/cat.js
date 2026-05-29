@@ -1,6 +1,6 @@
 // cat.js
  
-const animations = [play, poop, idle, sleep1];
+const animations = [idle, sleep1, sleep2, play, poop, eat];
  
 let activeLayer = null;
 let inactiveLayer = null;
@@ -34,8 +34,10 @@ function initCat() {
 function applyPosition(anim) {
   const container = document.querySelector('.cat-container');
   container.style.left   = anim.position.left   || '';
+  container.style.right   = anim.position.right   || '';
   container.style.top    = anim.position.top     || '';
   container.style.bottom = anim.position.bottom  || '';
+  container.style.transform = `rotate(${anim.rotation || 0}deg)`;
   container.style.width  = anim.size.width;
   container.style.height = anim.size.height;
 }

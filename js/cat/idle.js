@@ -15,6 +15,7 @@ const idle = {
     outro: [],
 
     fps: 180,
+    //10-15min
     minTime: 600000,
     maxTime: 900000,
     position: {left: '180px', bottom: '70px'},

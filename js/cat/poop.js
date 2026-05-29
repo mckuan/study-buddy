@@ -13,10 +13,13 @@ const poop = {
     outro: [],
 
     fps: 180,
+    //3-5min
     minTime: 180000,
     maxTime: 300000,
-    position: {left: '280px', top: '133px'},
-    size: {width: '150px', height: '150px'}
+    position: {left: '280px', top: '131px'},
+    size: {width: '150px', height: '150px'},
+    rotation: 5 
+
 }
  
  

@@ -4,10 +4,6 @@
   -webkit-app-region: no-drag;
   pointer-events: none;
 }
-/*idle 150,150,180,70(bottom)
-* sleep 220, 220, 130, 130(top)
-* poop 150, 150, 280, 133(top)
-*/
 
 .cat-frame-1,
 .cat-frame-2 {
