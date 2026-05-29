@@ -1,8 +1,6 @@
 // cat.js
  
-// cat.js
- 
-const animations = [idle1, sleep1, poop];
+const animations = [play, poop, idle, sleep1];
  
 let activeLayer = null;
 let inactiveLayer = null;

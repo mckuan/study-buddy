@@ -30,8 +30,8 @@ const sleep1Helper = {
     ],
     
     fps: 180,
-    minTime: 20000,
-    maxTime: 60000,
+    minTime: 180000,
+    maxTime: 480000,
     position: {left: '130px', top: '130px'},
     size: {width: '220px', height: '220px'}
     
@@ -43,8 +43,8 @@ const sleep1 = {
     outro: [],
 
     fps: 180,
-    minTime: 20000,
-    maxTime: 60000,
+    minTime: 900000,
+    maxTime: 1800000,
     position: {left: '130px', top: '130px'},
     size: {width: '220px', height: '220px'}
   

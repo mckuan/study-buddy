@@ -1,5 +1,5 @@
-// idle1.js
-const idle1 = {
+// idle.js
+const idle = {
     intro: [],
     frames: [
         './assets/cat/normal-idle1-animation/normal-idle1-f1.png',
@@ -15,8 +15,8 @@ const idle1 = {
     outro: [],
 
     fps: 180,
-    minTime: 20000,
-    maxTime: 60000,
+    minTime: 600000,
+    maxTime: 900000,
     position: {left: '180px', bottom: '70px'},
     size: {width: '150px', height: '150px'}
 }
