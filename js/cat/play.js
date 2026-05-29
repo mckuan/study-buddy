@@ -26,7 +26,7 @@ const play = {
     //5-15min
     minTime: 300000,
     maxTime: 900000,
-    position: {left: '100px', top: '130px'},
+    position: {left: '90px', top: '110px'},
     size: {width: '220px', height: '220px'}
     
 }

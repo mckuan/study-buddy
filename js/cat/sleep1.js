@@ -33,8 +33,6 @@ const sleep1Helper = {
     //3-8min
     minTime: 180000,
     maxTime: 480000,
-    position: {left: '130px', top: '130px'},
-    size: {width: '220px', height: '220px'}
     
 }
 
@@ -47,7 +45,7 @@ const sleep1 = {
     //15-30min
     minTime: 900000,
     maxTime: 1800000,
-    position: {left: '130px', top: '130px'},
+    position: {left: '120px', top: '110px'},
     size: {width: '220px', height: '220px'}
   
 }

@@ -16,7 +16,7 @@
     position: absolute;
     -webkit-app-region: no-drag;
     display: none;
-    z-index: 10;
+    z-index: 15;
     cursor: pointer;
     font-family: 'Nunito', sans-serif;
 }

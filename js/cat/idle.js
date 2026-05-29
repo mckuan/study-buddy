@@ -18,7 +18,7 @@ const idle = {
     //10-15min
     minTime: 600000,
     maxTime: 900000,
-    position: {left: '180px', bottom: '70px'},
+    position: {left: '170px', bottom: '65px'},
     size: {width: '150px', height: '150px'}
 }
  

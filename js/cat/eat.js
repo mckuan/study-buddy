@@ -12,7 +12,7 @@ const eat = {
     //10-15min 
     minTime: 600000,
     maxTime: 900000,
-    position: {left: '239px', top: '131px'},
+    position: {left: '230px', top: '111px'},
     size: {width: '224px', height: '220px'},
     
 

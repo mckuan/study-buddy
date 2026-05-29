@@ -26,8 +26,6 @@ const sleep2Helper = {
     //3-8min
     minTime: 180000,
     maxTime: 480000,
-    position: {right: '235px', top: '93px'},
-    size: {width: '220px', height: '220px'}
     
 }
 
@@ -39,8 +37,8 @@ const sleep2 = {
     fps: 180,
     minTime: 900000,
     maxTime: 1800000,
-    position: {right: '235px', top: '93px'},
+    position: {right: '223px', top: '73.5px'},
     size: {width: '220px', height: '220px'},
-    rotation: -5 
+    rotation: -5
   
 }

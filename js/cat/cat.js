@@ -1,15 +1,16 @@
 // cat.js
  
-const animations = [idle, sleep1, sleep2, play, poop, eat];
+const animations = [play, idle, sleep1, sleep2, eat, poop];
  
 let activeLayer = null;
 let inactiveLayer = null;
+let catContainer = null; // stored at module level so applyPosition can access it
  
 // ─── init ────────────────────────────────────────────────────────────────────
  
 function initCat() {
-  const container = document.createElement('div');
-  container.classList.add('cat-container');
+  catContainer = document.createElement('div');
+  catContainer.classList.add('cat-container');
  
   const img1 = document.createElement('img');
   const img2 = document.createElement('img');
@@ -19,9 +20,9 @@ function initCat() {
   img1.style.opacity = 1;
   img2.style.opacity = 0;
  
-  container.appendChild(img1);
-  container.appendChild(img2);
-  document.querySelector('.frame').appendChild(container);
+  catContainer.appendChild(img1);
+  catContainer.appendChild(img2);
+  document.querySelector('.content').appendChild(catContainer); // inside .content so z-index works
  
   activeLayer = img1;
   inactiveLayer = img2;
@@ -32,14 +33,13 @@ function initCat() {
 // ─── position ────────────────────────────────────────────────────────────────
  
 function applyPosition(anim) {
-  const container = document.querySelector('.cat-container');
-  container.style.left   = anim.position.left   || '';
-  container.style.right   = anim.position.right   || '';
-  container.style.top    = anim.position.top     || '';
-  container.style.bottom = anim.position.bottom  || '';
-  container.style.transform = `rotate(${anim.rotation || 0}deg)`;
-  container.style.width  = anim.size.width;
-  container.style.height = anim.size.height;
+  catContainer.style.left      = anim.position.left   || '';
+  catContainer.style.right     = anim.position.right  || '';
+  catContainer.style.top       = anim.position.top    || '';
+  catContainer.style.bottom    = anim.position.bottom || '';
+  catContainer.style.transform = `rotate(${anim.rotation || 0}deg)`;
+  catContainer.style.width     = anim.size.width;
+  catContainer.style.height    = anim.size.height;
 }
  
 // ─── frame playback ──────────────────────────────────────────────────────────
@@ -118,8 +118,6 @@ function randomBetween(min, max) {
 }
  
 async function playAnim(anim) {
-  // no applyPosition here — only scheduleNext calls it on top-level anims
- 
   const duration = randomBetween(anim.minTime, anim.maxTime);
   const end = Date.now() + duration;
  
@@ -129,7 +127,7 @@ async function playAnim(anim) {
     if (Array.isArray(anim.frames)) {
       await playLoopByTime(anim.frames, anim.fps, end - Date.now());
     } else {
-      await playAnim(anim.frames); // recurse into sleepInner
+      await playAnim(anim.frames); // recurse into nested anim (e.g. sleepInner)
     }
   }
  
@@ -147,3 +145,4 @@ async function scheduleNext() {
 }
  
 initCat();
+ 
