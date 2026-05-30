@@ -1,24 +1,24 @@
 //play
 
 const play = {
-    intro: [
+    intro: (body, color) =>[
     ],
-    frames: [
-        './assets/cat/normal-play-animation/normal-play-f1.png',
-        './assets/cat/normal-play-animation/normal-play-f2.png',
-        './assets/cat/normal-play-animation/normal-play-f3.png',
-        './assets/cat/normal-play-animation/normal-play-f4.png',
-        './assets/cat/normal-play-animation/normal-play-f5.png',
-        './assets/cat/normal-play-animation/normal-play-f6.png',
-        './assets/cat/normal-play-animation/normal-play-f7.png',
-        './assets/cat/normal-play-animation/normal-play-f8.png',
-        './assets/cat/normal-play-animation/normal-play-f9.png',
-        './assets/cat/normal-play-animation/normal-play-f10.png',
-        './assets/cat/normal-play-animation/normal-play-f11.png',
-        './assets/cat/normal-play-animation/normal-play-f12.png',
-        './assets/cat/normal-play-animation/normal-play-f13.png',
+    frames: (body, color) => [
+        `./assets/${body}/${color}/play/f1.png`,
+        `./assets/${body}/${color}/play/f2.png`,
+        `./assets/${body}/${color}/play/f3.png`,
+        `./assets/${body}/${color}/play/f4.png`,
+        `./assets/${body}/${color}/play/f5.png`,
+        `./assets/${body}/${color}/play/f6.png`,
+        `./assets/${body}/${color}/play/f7.png`,
+        `./assets/${body}/${color}/play/f8.png`,
+        `./assets/${body}/${color}/play/f9.png`,
+        `./assets/${body}/${color}/play/f10.png`,
+        `./assets/${body}/${color}/play/f11.png`,
+        `./assets/${body}/${color}/play/f12.png`,
+        `./assets/${body}/${color}/play/f13.png`,
     ],
-    outro: [
+    outro: (body, color) =>[
         
     ],
     

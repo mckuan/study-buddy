@@ -1,12 +1,12 @@
 //eat
 
 const eat = {
-    intro: [],
-    frames: [
-        './assets/cat/normal-eat-animation/normal-eat-f1.png',
-        './assets/cat/normal-eat-animation/normal-eat-f2.png',
+    intro: (body, color) => [],
+    frames: (body, color) => [
+        `./assets/${body}/${color}/eat/f1.png`,
+        `./assets/${body}/${color}/eat/f2.png`,
     ],
-    outro: [],
+    outro: (body,color) => [],
 
     fps: 200,
     //10-15min 
@@ -14,8 +14,7 @@ const eat = {
     maxTime: 900000,
     position: {left: '230px', top: '111px'},
     size: {width: '224px', height: '220px'},
-    
-
+    collarposition: {left: '335px', top: '200px'}
 }
  
  

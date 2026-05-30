@@ -1,10 +1,20 @@
 // cat.js
  
-const animations = [play, idle, sleep1, sleep2, eat, poop];
+const animations = [eat];
+const catBody  = 'fuzzy';
+const catColor = 'white';
+const collar = document.querySelector('.collar');
  
-let activeLayer = null;
-let inactiveLayer = null;
-let catContainer = null; // stored at module level so applyPosition can access it
+let activeLayer  = null;
+let catContainer = null;
+
+ 
+// ─── resolve frames ──────────────────────────────────────────────────────────
+ 
+function resolveFrames(frames) {
+  if (typeof frames === 'function') return frames(catBody, catColor);
+  return frames;
+}
  
 // ─── init ────────────────────────────────────────────────────────────────────
  
@@ -12,20 +22,14 @@ function initCat() {
   catContainer = document.createElement('div');
   catContainer.classList.add('cat-container');
  
-  const img1 = document.createElement('img');
-  const img2 = document.createElement('img');
-  img1.classList.add('cat-frame-1');
-  img2.classList.add('cat-frame-2');
+  const img = document.createElement('img');
+  img.classList.add('cat-frame');
+  img.style.opacity = 1;
  
-  img1.style.opacity = 1;
-  img2.style.opacity = 0;
+  catContainer.appendChild(img);
+  document.querySelector('.content').appendChild(catContainer);
  
-  catContainer.appendChild(img1);
-  catContainer.appendChild(img2);
-  document.querySelector('.content').appendChild(catContainer); // inside .content so z-index works
- 
-  activeLayer = img1;
-  inactiveLayer = img2;
+  activeLayer = img;
  
   scheduleNext();
 }
@@ -40,68 +44,48 @@ function applyPosition(anim) {
   catContainer.style.transform = `rotate(${anim.rotation || 0}deg)`;
   catContainer.style.width     = anim.size.width;
   catContainer.style.height    = anim.size.height;
+
+  collar.style.left      = anim.collarposition.left   || '';
+  collar.style.right     = anim.collarposition.right  || '';
+  collar.style.top       = anim.collarposition.top    || '';
+  collar.style.bottom    = anim.collarposition.bottom || '';
 }
  
 // ─── frame playback ──────────────────────────────────────────────────────────
  
-// plays a frame array exactly once through
 function playPhase(frames, fps) {
   return new Promise((resolve) => {
+    frames = resolveFrames(frames);
     if (!frames || frames.length === 0) { resolve(); return; }
  
-    // seed the first frame immediately
-    inactiveLayer.src = frames[0];
-    inactiveLayer.style.opacity = 1;
-    activeLayer.style.opacity = 0;
-    [activeLayer, inactiveLayer] = [inactiveLayer, activeLayer];
- 
-    if (frames.length === 1) { resolve(); return; }
+    activeLayer.src = frames[0];
+    if (frames.length === 1) { setTimeout(resolve, fps); return; }
  
     let i = 0;
     const interval = setInterval(() => {
-      const next = (i + 1) % frames.length;
- 
-      inactiveLayer.src = frames[next];
-      activeLayer.style.transition = `opacity ${fps * 0.5}ms`;
-      inactiveLayer.style.transition = `opacity ${fps * 0.5}ms`;
-      activeLayer.style.opacity = 0;
-      inactiveLayer.style.opacity = 1;
- 
-      [activeLayer, inactiveLayer] = [inactiveLayer, activeLayer];
-      i = next;
+      i = (i + 1) % frames.length;
+      activeLayer.src = frames[i];
  
       if (i === frames.length - 1) {
         clearInterval(interval);
-        resolve();
+        setTimeout(resolve, fps);
       }
     }, fps);
   });
 }
  
-// loops a frame array for a set duration
 function playLoopByTime(frames, fps, duration) {
   return new Promise((resolve) => {
+    frames = resolveFrames(frames);
     if (!frames || frames.length === 0) { resolve(); return; }
- 
-    inactiveLayer.src = frames[0];
-    inactiveLayer.style.opacity = 1;
-    activeLayer.style.opacity = 0;
-    [activeLayer, inactiveLayer] = [inactiveLayer, activeLayer];
  
     const end = Date.now() + duration;
     let i = 0;
+    activeLayer.src = frames[0];
  
     const interval = setInterval(() => {
-      const next = (i + 1) % frames.length;
- 
-      inactiveLayer.src = frames[next];
-      activeLayer.style.transition = `opacity ${fps * 0.5}ms`;
-      inactiveLayer.style.transition = `opacity ${fps * 0.5}ms`;
-      activeLayer.style.opacity = 0;
-      inactiveLayer.style.opacity = 1;
- 
-      [activeLayer, inactiveLayer] = [inactiveLayer, activeLayer];
-      i = next;
+      i = (i + 1) % frames.length;
+      activeLayer.src = frames[i];
  
       if (Date.now() >= end) {
         clearInterval(interval);
@@ -124,10 +108,10 @@ async function playAnim(anim) {
   await playPhase(anim.intro, anim.fps);
  
   while (Date.now() < end) {
-    if (Array.isArray(anim.frames)) {
+    if (typeof anim.frames === 'function' || Array.isArray(anim.frames)) {
       await playLoopByTime(anim.frames, anim.fps, end - Date.now());
     } else {
-      await playAnim(anim.frames); // recurse into nested anim (e.g. sleepInner)
+      await playAnim(anim.frames);
     }
   }
  
@@ -139,10 +123,12 @@ async function playAnim(anim) {
 async function scheduleNext() {
   while (true) {
     const anim = animations[Math.floor(Math.random() * animations.length)];
-    applyPosition(anim); // only called here, only on top-level anims
+    applyPosition(anim);
     await playAnim(anim);
   }
 }
  
-initCat();
+document.addEventListener('DOMContentLoaded', () => {
+  initCat();
+});
  

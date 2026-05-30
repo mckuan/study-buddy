@@ -1,18 +1,18 @@
 // idle.js
 const idle = {
-    intro: [],
-    frames: [
-        './assets/cat/normal-idle1-animation/normal-idle1-f1.png',
-        './assets/cat/normal-idle1-animation/normal-idle1-f2.png',
-        './assets/cat/normal-idle1-animation/normal-idle1-f3.png',
-        './assets/cat/normal-idle1-animation/normal-idle1-f4.png',
-        './assets/cat/normal-idle1-animation/normal-idle1-f5.png',
-        './assets/cat/normal-idle1-animation/normal-idle1-f6.png',
-        './assets/cat/normal-idle1-animation/normal-idle1-f7.png',
-        './assets/cat/normal-idle1-animation/normal-idle1-f8.png',
-        './assets/cat/normal-idle1-animation/normal-idle1-f9.png',
+    intro: (body, color) =>[],
+    frames: (body, color) => [
+        `./assets/${body}/${color}/idle/f1.png`,
+        `./assets/${body}/${color}/idle/f2.png`,
+        `./assets/${body}/${color}/idle/f3.png`,
+        `./assets/${body}/${color}/idle/f4.png`,
+        `./assets/${body}/${color}/idle/f5.png`,
+        `./assets/${body}/${color}/idle/f6.png`,
+        `./assets/${body}/${color}/idle/f7.png`,
+        `./assets/${body}/${color}/idle/f8.png`,
+        `./assets/${body}/${color}/idle/f9.png`,
     ],
-    outro: [],
+    outro: (body, color) =>[],
 
     fps: 180,
     //10-15min

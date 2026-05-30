@@ -1,16 +1,14 @@
 // idle.js
 
 const poop = {
-    intro: [],
-    frames: [
-        './assets/cat/normal-poop-animation/normal-poop-f1.png',
-        './assets/cat/normal-poop-animation/normal-poop-f2.png',
-        './assets/cat/normal-poop-animation/normal-poop-f3.png',
-        './assets/cat/normal-poop-animation/normal-poop-f4.png',
-        './assets/cat/normal-poop-animation/normal-poop-f5.png',
-        './assets/cat/normal-poop-animation/normal-poop-f6.png',
+    intro: (body, color) =>[],
+    frames: (body, color) =>[
+        
+        `./assets/${body}/${color}/poop/f1.png`,
+        `./assets/${body}/${color}/poop/f2.png`,
+        
     ],
-    outro: [],
+    outro: (body, color) =>[],
 
     fps: 180,
     //3-5min

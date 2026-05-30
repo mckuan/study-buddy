@@ -1,16 +1,24 @@
 .cat-container {
   position: absolute;
-  z-index: 5;
+  z-index: 3;
   -webkit-app-region: no-drag;
   pointer-events: none;
 }
 
-.cat-frame-1,
-.cat-frame-2 {
+.cat-frame {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+
+.collar{
+    position: relative;
+    background-color: red;
+    width: 25px;
+    height: 10px;
+    z-index: 2;
 }
