@@ -1,4 +1,6 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, } = require('electron');
+const Store = require('electron-store');
+const store = new Store();
 const windowStateKeeper = require('electron-window-state');
 const {
   blockWebsites, unblockWebsites,
@@ -6,6 +8,7 @@ const {
   setBlockingEnabled, setBlockedSites,
 } = require('./hosts');
 
+let alwaysOnTopEnabled = store.get('alwaysOnTop', false);
 let win;
 let checklistWin;
 let roomWin;
@@ -36,6 +39,7 @@ function createWindow() {
   win.loadFile('index.html');
   win.setIgnoreMouseEvents(false);
   win.setAlwaysOnTop(true, 'screen-saver');
+  windowOnTop(alwaysOnTopEnabled, win);
 }
 
 function createChecklistWindow() {
@@ -52,7 +56,6 @@ function createChecklistWindow() {
     height: checklistState.height,
     transparent: true,
     frame: false,
-    alwaysOnTop: true,
     hasShadow: false,
     resizable: false,
     webPreferences: {
@@ -64,6 +67,7 @@ function createChecklistWindow() {
   checklistWin.loadFile('checklist.html');
   checklistWin.setIgnoreMouseEvents(false);
   checklistWin.setAlwaysOnTop(true, 'screen-saver');
+  windowOnTop(alwaysOnTopEnabled, checklistWin);
 }
 
 function createRoomWindow(x, y, name, code, creator) {
@@ -92,6 +96,17 @@ function createRoomWindow(x, y, name, code, creator) {
     win.show();
     roomWin = null;
   });
+  windowOnTop(alwaysOnTopEnabled, roomWin);
+}
+
+function windowOnTop(alwaysOnTopEnabled, win){
+  if (alwaysOnTopEnabled) {
+    win.setAlwaysOnTop(true, 'screen-saver');
+    win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  } else {
+    win.setAlwaysOnTop(false);
+    win.setVisibleOnAllWorkspaces(false);
+  }
 }
 
 // ── window controls ───────────────────────────────────────
@@ -154,13 +169,18 @@ ipcMain.on('update-blocked-sites', (event, sites) => {
   setBlockedSites(sites);
 });
 
+ipcMain.handle('get-always-on-top', () => {
+  return alwaysOnTopEnabled;
+});
+
 ipcMain.on('toggle-always-on-top', (event, { enabled }) => {
+  store.set('alwaysOnTop', enabled);
   if (enabled) {
-    win.setAlwaysOnTop(true, 'screen-saver');
-    win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+    alwaysOnTopEnabled = true;
+    windowOnTop(alwaysOnTopEnabled, win);
   } else {
-    win.setAlwaysOnTop(false);
-    win.setVisibleOnAllWorkspaces(false);
+    alwaysOnTopEnabled = false;
+    windowOnTop(alwaysOnTopEnabled, win);
   }
 });
 

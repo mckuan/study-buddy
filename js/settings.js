@@ -1,3 +1,4 @@
+
 const settingsBtn = document.querySelector('.settings-btn');
 const settings = document.querySelector('.settings');
 const blur = document.querySelector('.blur');
@@ -17,6 +18,8 @@ let blockedsites = [];
 settingsBtn.addEventListener('click', async () => {
   blur.style.display = 'block';
   settings.style.display = 'block';
+  alwaysOnTopToggle.checked =
+    await ipcRenderer.invoke('get-always-on-top');
   ipcRenderer.send('get-blocking-enabled');
   blockedsites = await ipcRenderer.invoke('get-blocked-sites');
   renderDropdown();
@@ -29,10 +32,8 @@ closesettings.addEventListener('click', () => {
 
 // ---------------- ALWAYS ON TOP ----------------
 
-alwaysOnTopToggle.checked = true;
-
 alwaysOnTopToggle.addEventListener('change', () => {
-  ipcRenderer.send('toggle-always-on-top', { enabled: alwaysOnTopToggle.checked });
+  ipcRenderer.send('toggle-always-on-top', {enabled: alwaysOnTopToggle.checked});
 });
 
 // ---------------- BLOCKING ----------------
@@ -51,7 +52,7 @@ ipcRenderer.on('settings-toggle-success', (_, { enabled }) => {
 });
 
 ipcRenderer.on('settings-toggle-failed', (_, { wrongPassword }) => {
-  blockingToggle.checked = false; // roll back toggle
+  blockingToggle.checked = false; 
   if (wrongPassword) {
     errorPopup.style.display = 'block';
     setTimeout(() => errorPopup.style.display = 'none', 3000);

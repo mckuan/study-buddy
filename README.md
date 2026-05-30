@@ -13,17 +13,6 @@ A desktop study companion that combines website blocking, a virtual pet cat, and
 
 ---
 
-## Current Bugs
-
-### Password Verification Instability
-
-The password verification system used for website blocking is currently unstable. This can occasionally result in inconsistent blocking behavior across websites and may allow or prevent access unexpectedly.
-
-### Always-On-Top Preference Persistence
-
-The application's "Always On Top" setting is not consistently saved between sessions. Users may experience different behavior after restarting the application.
-
----
 
 ## What's Next
 
