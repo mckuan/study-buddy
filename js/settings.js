@@ -37,22 +37,21 @@ alwaysOnTopToggle.addEventListener('change', () => {
 
 // ---------------- BLOCKING ----------------
 
+// Reflect the persisted state when settings opens
 ipcRenderer.on('blocking-enabled-state', (_, { enabled }) => {
   blockingToggle.checked = enabled;
 });
 
 blockingToggle.addEventListener('change', () => {
-  ipcRenderer.send('settings-toggle-blocking', {
-    enabled: blockingToggle.checked
-  });
+  ipcRenderer.send('settings-toggle-blocking', { enabled: blockingToggle.checked });
 });
 
-ipcRenderer.on('settings-toggle-success', () => {
+ipcRenderer.on('settings-toggle-success', (_, { enabled }) => {
   blockingToggle.checked = enabled;
 });
 
 ipcRenderer.on('settings-toggle-failed', (_, { wrongPassword }) => {
-  blockingToggle.checked = false;
+  blockingToggle.checked = false; // roll back toggle
   if (wrongPassword) {
     errorPopup.style.display = 'block';
     setTimeout(() => errorPopup.style.display = 'none', 3000);

@@ -1,10 +1,13 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const windowStateKeeper = require('electron-window-state');
-const { unblockWebsites, blockWebsites, getBlockingEnabled, getBlockedSites,
-  setBlockingEnabled, setBlockedSites } = require('./hosts');
+const {
+  blockWebsites, unblockWebsites,
+  getBlockingEnabled, getBlockedSites,
+  setBlockingEnabled, setBlockedSites,
+} = require('./hosts');
 
-let win;          
-let checklistWin; 
+let win;
+let checklistWin;
 let roomWin;
 
 // ── window creation ───────────────────────────────────────
@@ -15,7 +18,7 @@ function createWindow() {
     defaultHeight: 280
   });
 
-  win = new BrowserWindow({ 
+  win = new BrowserWindow({
     x: windowState.x,
     y: windowState.y,
     width: windowState.width,
@@ -161,26 +164,19 @@ ipcMain.on('toggle-always-on-top', (event, { enabled }) => {
   }
 });
 
-// ── timer blocking ─────────────────────────────────────────
+// ── timer blocking ────────────────────────────────────────
 
-ipcMain.on('timer-request-block', async (event) => {
-  if (!getBlockingEnabled()) {
-    event.reply('timer-block-success'); // start timer without blocking
-    return;
-  }
+ipcMain.on('timer-request-block', async () => {
   try {
-    await blockWebsites(true);
-    event.reply('timer-block-success');
+    await blockWebsites();
   } catch (err) {
     console.error('Blocking failed:', err);
-    event.reply('timer-block-failed', { wrongPassword: err.message === 'wrong-password' });
   }
 });
 
 ipcMain.on('timer-request-unblock', async () => {
-  if (!getBlockingEnabled()){ return; }
   try {
-    await unblockWebsites(true);
+    await unblockWebsites();
   } catch (err) {
     console.error('Unblocking failed:', err);
   }
@@ -188,14 +184,6 @@ ipcMain.on('timer-request-unblock', async () => {
 
 // ── app ───────────────────────────────────────────────────
 
-app.whenReady().then(createWindow);
-
-app.on('before-quit', async (event) => {
-  event.preventDefault();
-  try {
-    await unblockWebsites(true);
-  } catch (err) {
-    console.error('Failed to unblock on quit:', err);
-  }
-  app.exit();
+app.whenReady().then(() => {
+  createWindow();
 });
