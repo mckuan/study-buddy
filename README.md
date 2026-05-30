@@ -93,8 +93,10 @@ This project is currently under active development. Core functionality is implem
 
 ## What it Looks Like Now
 
+animation
 <img width="800" height="589" alt="ScreenRecording2026-05-29at11 39 36PM-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/8498b386-e790-4e9f-bed4-c6403f05c321" />
 
+main functions
 <img width="417" height="268" alt="Screenshot 2026-05-29 at 11 51 38 PM" src="https://github.com/user-attachments/assets/e339da17-2527-45b4-8960-62a27e7cc145" />
 
 <img width="417" height="268" alt="Screenshot 2026-05-29 at 11 51 54 PM" src="https://github.com/user-attachments/assets/5a7e3567-4f11-499d-8a3a-65f55637deae" />
@@ -104,6 +106,8 @@ This project is currently under active development. Core functionality is implem
 <img width="417" height="268" alt="Screenshot 2026-05-29 at 11 52 08 PM" src="https://github.com/user-attachments/assets/3a5916d3-e51c-4075-8de6-c48a41cc2f42" />
 
 <img width="417" height="268" alt="Screenshot 2026-05-29 at 11 52 27 PM" src="https://github.com/user-attachments/assets/728972a7-6cf4-4768-88eb-4116ece229e7" />
+
+Shared study room -> after clicking invite button
 
 <img width="417" height="268" alt="Screenshot 2026-05-29 at 11 52 48 PM" src="https://github.com/user-attachments/assets/af1e09f1-dc5f-444f-9e41-2b3b785f16f6" />
 
