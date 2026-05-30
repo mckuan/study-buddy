@@ -48,7 +48,7 @@ blockingToggle.addEventListener('change', () => {
 });
 
 ipcRenderer.on('settings-toggle-success', () => {
-  blockingToggle.checked = true;
+  blockingToggle.checked = enabled;
 });
 
 ipcRenderer.on('settings-toggle-failed', (_, { wrongPassword }) => {

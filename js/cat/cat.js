@@ -1,8 +1,9 @@
 // cat.js
  
 const animations = [eat];
-const catBody  = 'fuzzy';
+const catBody  = 'fluffy';
 const catColor = 'white';
+const collarcolor = 'red';
 const collar = document.querySelector('.collar');
  
 let activeLayer  = null;
@@ -49,6 +50,7 @@ function applyPosition(anim) {
   collar.style.right     = anim.collarposition.right  || '';
   collar.style.top       = anim.collarposition.top    || '';
   collar.style.bottom    = anim.collarposition.bottom || '';
+  collar.style.backgroundColor = collarcolor;
 }
  
 // ─── frame playback ──────────────────────────────────────────────────────────

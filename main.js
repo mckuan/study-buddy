@@ -137,7 +137,7 @@ ipcMain.on('get-blocking-enabled', (event) => {
 ipcMain.on('settings-toggle-blocking', async (event, { enabled }) => {
   const result = await setBlockingEnabled(enabled);
   if (result === 'ok') {
-    event.reply('settings-toggle-success');
+    event.reply('settings-toggle-success', { enabled });
   } else {
     event.reply('settings-toggle-failed', { wrongPassword: result === 'wrong-password' });
   }
@@ -164,6 +164,10 @@ ipcMain.on('toggle-always-on-top', (event, { enabled }) => {
 // ── timer blocking ─────────────────────────────────────────
 
 ipcMain.on('timer-request-block', async (event) => {
+  if (!getBlockingEnabled()) {
+    event.reply('timer-block-success'); // start timer without blocking
+    return;
+  }
   try {
     await blockWebsites(true);
     event.reply('timer-block-success');
@@ -174,8 +178,9 @@ ipcMain.on('timer-request-block', async (event) => {
 });
 
 ipcMain.on('timer-request-unblock', async () => {
+  if (!getBlockingEnabled()){ return; }
   try {
-    await unblockWebsites();
+    await unblockWebsites(true);
   } catch (err) {
     console.error('Unblocking failed:', err);
   }
@@ -184,3 +189,13 @@ ipcMain.on('timer-request-unblock', async () => {
 // ── app ───────────────────────────────────────────────────
 
 app.whenReady().then(createWindow);
+
+app.on('before-quit', async (event) => {
+  event.preventDefault();
+  try {
+    await unblockWebsites(true);
+  } catch (err) {
+    console.error('Failed to unblock on quit:', err);
+  }
+  app.exit();
+});

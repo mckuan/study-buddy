@@ -83,6 +83,10 @@ async function ensureAdminAccess() {
 
   try {
     const password = await promptForPassword();
+    const valid = await validatePassword(password); // validate it!
+    if (!valid) {
+      return 'wrong-password';
+    }
     await keytar.setPassword('study-buddy', 'admin', password);
     sudoPassword = password;
     blockingEnabled = true;
@@ -91,7 +95,6 @@ async function ensureAdminAccess() {
     return 'cancelled';
   }
 }
- 
 /** Call from the settings toggle to forget the cached credential. */
 async function revokeAdminAccess() {
   sudoPassword = null;
@@ -103,17 +106,20 @@ async function revokeAdminAccess() {
   * Checks if blocking was allowed previously writes to computer 
   * making all blocked sites start with local host and clears dns caches
   */
-async function blockWebsites() {
+async function blockWebsites(force = false) {
   if (!blockingEnabled && !force) return;
  
   const result = await ensureAdminAccess();
   if (result === 'cancelled'){
     blockingEnabled = false;
     throw new Error(result);
-  }
+  } 
   if (result === 'wrong-password'){
+    blockingEnabled = false;
     throw new Error(result);
   }
+  blockingEnabled = true;   
+  store.set('blockingEnabled', true);
 
   const entries = blocksites.flatMap(site => [
     `127.0.0.1 ${site}`,
@@ -132,8 +138,8 @@ async function blockWebsites() {
  * checks if blocking was allowed 
  * and deletes the lines we wrote when blocking and clears cache 
  */
-async function unblockWebsites() {
-  if (!blockingEnabled) return;
+async function unblockWebsites(force = false) {
+  if (!blockingEnabled && !force) return;
  
   const result = await ensureAdminAccess();
   if (result !== 'ok') return;

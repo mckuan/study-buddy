@@ -89,6 +89,7 @@ npm start
 
 This project is currently under active development. Core functionality is implemented, and current work is focused on improving stability, onboarding, deployment, and collaborative study room features.
 
+
 ---
 
 ## What it Looks Like Now
