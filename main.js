@@ -1,3 +1,9 @@
+const originalEmit = process.emit;
+process.emit = function(event, warning) {
+  if (event === 'warning' && warning?.message?.includes('textured')) return false;
+  return originalEmit.apply(process, arguments);
+};
+
 const { app, BrowserWindow, ipcMain, } = require('electron');
 const Store = require('electron-store');
 const store = new Store();
@@ -57,7 +63,9 @@ function createChecklistWindow() {
     transparent: true,
     frame: false,
     hasShadow: false,
+    alwaysOnTop: true,
     resizable: false,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
@@ -68,6 +76,17 @@ function createChecklistWindow() {
   checklistWin.setIgnoreMouseEvents(false);
   checklistWin.setAlwaysOnTop(true, 'screen-saver');
   windowOnTop(alwaysOnTopEnabled, checklistWin);
+
+  checklistWin.once('ready-to-show', () => {
+    checklistWin.show();
+    // Keep focus on main window so checklist button stays responsive
+    win.focus();
+  });
+
+  checklistWin.on('closed', () => {
+    win.webContents.send('checklist-closed');
+    checklistWin = null;
+  });
 }
 
 function createRoomWindow(x, y, name, code, creator) {
@@ -116,7 +135,13 @@ ipcMain.on('minimize-window', () => {
 });
 
 ipcMain.on('open-checklist', () => {
-  createChecklistWindow();
+  if (checklistWin && !checklistWin.isDestroyed()) {
+    checklistWin.destroy();
+    checklistWin = null;
+    win.focus();
+  } else {
+    createChecklistWindow();
+  }
 });
 
 ipcMain.on('close-checklist', () => {
@@ -124,6 +149,7 @@ ipcMain.on('close-checklist', () => {
     checklistWin.destroy();
     checklistWin = null;
   }
+  win.focus();
 });
 
 ipcMain.on('focus-main-window', () => {

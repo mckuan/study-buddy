@@ -1,8 +1,10 @@
+const { ipcRenderer } = require('electron'); 
 const input = document.querySelector('.input-text');
 const checklistItemsContainer = document.querySelector('.checklist-items');
 const completeItemsContainer = document.querySelector('.complete-items');
 const dateBtn = document.querySelector('.date-btn');
 const dropdown = document.querySelector('.dropdown');
+const checklistclose = document.querySelector('.checklist-close');
 const date = new Date();
 let dateKey = getDateKey(0);
 
@@ -142,7 +144,7 @@ function renderDateOptions() {
   });
 }
 
-document.addEventListener('click', () => {
+document.addEventListener('click', (e) => {
   ipcRenderer.send('focus-checklist-window');
 });
 

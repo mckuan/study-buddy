@@ -2,7 +2,7 @@
  
 const animations = [eat];
 const catBody  = 'fluffy';
-const catColor = 'white';
+const catColor = 'black';
 const collarcolor = 'red';
 const collar = document.querySelector('.collar');
  

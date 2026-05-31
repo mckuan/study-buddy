@@ -6,6 +6,7 @@
     justify-content: center;
     align-items: center;
     z-index: 0;
+    overflow: hidden;
     position: relative;
 }
 
@@ -120,5 +121,6 @@ body {
     padding: 0;
     width: 420px;
     height: 280px;
+    overflow: hidden;
     user-select: none;   
 }
