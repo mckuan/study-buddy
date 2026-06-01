@@ -36,6 +36,10 @@ io.on('connection', (socket) => {
       socket.emit('error', { message: 'Room not found!' });
       return;
     }
+    if (room.members.length >= 7) {
+      socket.emit('error', { message: 'Room is full!' });
+      return;
+    }
     room.members.push({ id: socket.id, name });
     socket.join(code.toUpperCase());
     socket.emit('room-joined', {

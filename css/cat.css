@@ -1,7 +1,6 @@
 .cat-container {
   position: absolute;
   z-index: 3;
-  -webkit-app-region: no-drag;
   pointer-events: none;
 }
 
