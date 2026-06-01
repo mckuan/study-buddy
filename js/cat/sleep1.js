@@ -7,24 +7,20 @@ const sleep1Helper = {
         `./assets/${body}/${color}/sleep1/f3.png`,
         `./assets/${body}/${color}/sleep1/f4.png`,
         `./assets/${body}/${color}/sleep1/f5.png`,
+    ],
+    frames: (body, color) => [
         `./assets/${body}/${color}/sleep1/f6.png`,
         `./assets/${body}/${color}/sleep1/f7.png`,
         `./assets/${body}/${color}/sleep1/f8.png`,
         `./assets/${body}/${color}/sleep1/f9.png`,
     ],
-    frames: (body, color) => [
+    outro: (body, color) => [
         `./assets/${body}/${color}/sleep1/f10.png`,
         `./assets/${body}/${color}/sleep1/f11.png`,
         `./assets/${body}/${color}/sleep1/f12.png`,
         `./assets/${body}/${color}/sleep1/f13.png`,
         `./assets/${body}/${color}/sleep1/f14.png`,
-    ],
-    outro: (body, color) => [
         `./assets/${body}/${color}/sleep1/f15.png`,
-        `./assets/${body}/${color}/sleep1/f16.png`,
-        `./assets/${body}/${color}/sleep1/f17.png`,
-        `./assets/${body}/${color}/sleep1/f18.png`,
-        `./assets/${body}/${color}/sleep1/f19.png`,
     ],
     
     fps: 180,
@@ -44,6 +40,8 @@ const sleep1 = {
     minTime: 900000,
     maxTime: 1800000,
     position: {left: '120px', top: '110px'},
-    size: {width: '220px', height: '220px'}
+    size: {width: '220px', height: '220px'},
+    collarposition: {left: '230px', top: '190px'},
+    collarsize: {width: '20px', height: '10px'},
   
 }

@@ -25,15 +25,37 @@
         <button class="checklist-btn">checklist</button>
       </div>
       <div class="skin-selector" id="skin-selector">
-        <p class="skin-prompt">choose your cat</p>
-        <div class="skin-row">
-          <button id="skin-prev">◀</button>
-          <span id="skin-name">fluffy chinchilla</span>
-          <button id="skin-next">▶</button>
+        <div class="select-welcome">
+          <h2>welcome to study-buddy!</h2>
+          <input id="player-name" placeholder="what's your name?" maxlength="20" />
         </div>
-        <span id="skin-idx"></span>
+
+        <div class="selectors">
+          <div class="cat-select">
+            <p class="select-label">choose your cat</p>
+            <div class="skin-row">
+              <button id="skin-prev">◀</button>
+              <div class="cat-preview">
+                <img id="skin-name" src="" alt="cat preview" />
+                <div class="collarE"></div>
+              </div>
+              <button id="skin-next">▶</button>
+            </div>
+            <span id="skin-idx"></span>
+          </div>
+          <div class="collar-select">
+            <p class="select-label">choose your collar color</p>
+            <div class="collar-row">
+              <button id="collar-prev">◀</button>
+              <div class="collar-swatches" id="collar-swatches"></div>
+              <button id="collar-next">▶</button>
+            </div>
+            <span id="collar-page-idx"></span>
+          </div>
+        </div>
         <button id="skin-go">let's go</button>
       </div>
+      
       <div class="invite-content">
         <div class="invitation-block">
           <input class="enter-code" placeholder="ABC123"/>

@@ -21,6 +21,7 @@ let roomWin;
 let catcolor = 'orange';
 let catshape = 'fluffy';
 let collarcolor = 'red';
+let name = store.get('playerName', '');
 
 // ── window creation ───────────────────────────────────────
 
@@ -249,6 +250,14 @@ ipcMain.on('set-cat-shape', (event, shape) => {
 
 ipcMain.on('set-collar-color', (event, color) => {
   collarcolor = color;
+});
+
+ipcMain.on('set-player-name', (event, name) => {
+  store.set('playerName', name);
+});
+
+ipcMain.handle('get-player-name', () => {
+  return name;
 });
 
 // ── app ───────────────────────────────────────────────────

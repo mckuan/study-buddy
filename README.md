@@ -13,7 +13,6 @@ A desktop study companion that combines website blocking, a virtual pet cat, and
 
 ---
 
-
 ## What's Next
 
 ### Welcome Page
@@ -42,6 +41,8 @@ Conduct additional testing of the study room system after deployment to identify
 * UI polish and onboarding improvements
 * Expanded customization options
 * Performance optimization
+* room and main window share windowstate
+* tutorial 
 
 ---
 

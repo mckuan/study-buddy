@@ -7,53 +7,163 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
+    gap: 5px;
+    padding: 12px;
     font-family: 'Nunito', sans-serif;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-    -webkit-app-region: no-drag;
+    box-sizing: border-box;
     z-index: 999;
 }
 
-.skin-prompt {
-    font-size: 15px;
+.select-welcome {
+    top: 20px;
+    text-align: center;
+}
+
+.select-welcome h2 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #444;
+    margin: 0 0 4px;
+}
+
+.select-welcome input {
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-family: 'Nunito', sans-serif;
+    color: #333;
+    outline: none;
+    text-align: center;
+    width: 130px;
+    -webkit-app-region: no-drag;
+}
+
+.select-welcome input::placeholder { color: #888; }
+
+.select-label {
+    align-items: center;
+    font-size: 11px;
     color: #555;
     margin: 0;
 }
 
-.skin-row {
+.selectors{
     display: flex;
-    align-items: center;
-    gap: 16px;
+    height: 100px;
+    flex-direction: row;
 }
 
-#skin-prev, #skin-next {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+.cat-select{
+    width: 130px;
+    display:flex;
+    flex-direction: column;
+}
+
+.cat-preview{
+    position: relative;
+    width: 65px;
+    height: 45px;
+}
+
+.skin-row {
+    display: flex;
+    height: 70px;
+    align-items: center;
+    gap: 10px;
+}
+
+.collarE{
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    z-index: 1;
+    width: 15px;
+    height: 10px;
+    background-color: #e07b72;
+}
+
+#skin-prev, #skin-next,
+#collar-prev, #collar-next {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
     background: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.2);
-    font-size: 16px;
+    font-size: 11px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #333;
+    flex-shrink: 0;
+    -webkit-app-region: no-drag;
 }
 
-#skin-prev:hover, #skin-next:hover {
+#skin-prev:hover, #skin-next:hover,
+#collar-prev:hover, #collar-next:hover {
     background: rgba(255, 255, 255, 0.8);
 }
 
 #skin-name {
-    font-size: 22px;
-    font-weight: 700;
-    color: #333;
-    min-width: 180px;
-    text-align: center;
+    position: absolute;
+    width: 65px;
+    height: 45px;
+    z-index: 2;
+    object-fit: contain;
+    image-rendering: pixelated;
 }
 
 #skin-idx {
-    font-size: 13px;
+    font-size: 10px;
+    color: #666;
+}
+
+.collar-select{
+    width: 170px;
+    display:flex;
+    flex-direction: column;
+}
+
+/* collar row */
+.collar-row {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.collar-swatches {
+    display: flex;
+    gap: 5px;
+    height: 45px;
+    align-items: center;
+}
+
+.collar-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.1s, border-color 0.1s;
+    -webkit-app-region: no-drag;
+}
+
+.collar-swatch:hover {
+    transform: scale(1.2);
+}
+
+.collar-swatch.selected {
+    border-color: rgba(0,0,0,0.5);
+    transform: scale(1.2);
+}
+
+#collar-page-idx {
+    font-size: 10px;
     color: #666;
 }
 
@@ -61,11 +171,13 @@
     background: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    padding: 8px 28px;
-    font-size: 16px;
+    padding: 5px 20px;
+    font-size: 12px;
     font-family: 'Nunito', sans-serif;
     color: #333;
     cursor: pointer;
+    margin-top: 2px;
+    -webkit-app-region: no-drag;
 }
 
 #skin-go:hover {

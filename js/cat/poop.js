@@ -14,9 +14,11 @@ const poop = {
     //3-5min
     minTime: 180000,
     maxTime: 300000,
-    position: {left: '270px', top: '112px'},
+    position: {left: '270px', top: '110px'},
     size: {width: '150px', height: '150px'},
-    rotation: 5 
+    rotation: 5,
+    collarposition: {left: '340px', top: '163px'},
+    collarsize: {width: '20px', height: '10px'},
 
 }
  

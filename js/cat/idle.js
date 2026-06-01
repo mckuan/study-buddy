@@ -19,7 +19,9 @@ const idle = {
     minTime: 600000,
     maxTime: 900000,
     position: {left: '170px', bottom: '65px'},
-    size: {width: '150px', height: '150px'}
+    size: {width: '150px', height: '150px'},
+    collarposition: {left: '238px', top: '85px'},
+    collarsize: {width: '13px', height: '10px'},
 }
  
 

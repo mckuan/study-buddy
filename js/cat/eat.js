@@ -14,7 +14,8 @@ const eat = {
     maxTime: 900000,
     position: {left: '230px', top: '111px'},
     size: {width: '224px', height: '220px'},
-    collarposition: {left: '335px', top: '200px'}
+    collarposition: {left: '335px', top: '200px'},
+    collarsize: {width: '20px', height: '10px'},
 }
  
  

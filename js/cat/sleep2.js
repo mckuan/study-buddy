@@ -40,5 +40,6 @@ const sleep2 = {
     size: {width: '220px', height: '220px'},
     rotation: -5,
     collarposition: {right: '223px', top: '73.5px'},
+    collarsize: {width: '20px', height: '10px'},
   
 }

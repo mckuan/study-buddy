@@ -16,7 +16,5 @@
 
 .collar{
     position: relative;
-    width: 25px;
-    height: 10px;
     z-index: 2;
 }

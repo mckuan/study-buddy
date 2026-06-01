@@ -1,6 +1,6 @@
 // cat.js
 
-const animations = [sleep2, eat];
+const animations = [sleep1, sleep2, idle, eat, poop, play];
 const collar = document.querySelector('.collar');
  
 let activeLayer  = null;
@@ -58,6 +58,9 @@ function applyPosition(anim) {
   collar.style.top       = anim.collarposition.top    || '';
   collar.style.bottom    = anim.collarposition.bottom || '';
   collar.style.backgroundColor = collarcolor;
+
+  collar.style.width     = anim.collarsize ? anim.collarsize.width : '';
+  collar.style.height    = anim.collarsize ? anim.collarsize.height : '';
 }
  
 // ─── frame playback ──────────────────────────────────────────────────────────

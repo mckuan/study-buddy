@@ -158,11 +158,3 @@ body {
     color: white;
 }
 
-.catpic{
-    width: 100%;
-    height: 120px;
-    margin-top: auto;
-    background-image: url('../assets/cat-image.png');
-    background-size: cover;
-    background-position: center;
-}
