@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/settings.css">
   <link rel="stylesheet" href="css/invite.css">
   <link rel="stylesheet" href="css/cat.css">
+  <link rel="stylesheet" href="css/select.css">
 </head>
 <body>
   <div class="frame">
@@ -22,6 +23,16 @@
         <button class="invite-btn">invite</button>
         <button class="timer-btn">timer</button>
         <button class="checklist-btn">checklist</button>
+      </div>
+      <div class="skin-selector" id="skin-selector">
+        <p class="skin-prompt">choose your cat</p>
+        <div class="skin-row">
+          <button id="skin-prev">◀</button>
+          <span id="skin-name">fluffy chinchilla</span>
+          <button id="skin-next">▶</button>
+        </div>
+        <span id="skin-idx"></span>
+        <button id="skin-go">let's go</button>
       </div>
       <div class="invite-content">
         <div class="invitation-block">
@@ -82,5 +93,6 @@
   <script src="js/timer.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/invite.js"></script>
+  <script src="js/select.js"></script>
 </body>
 </html>

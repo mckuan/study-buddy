@@ -54,3 +54,4 @@ checklistbutton.addEventListener('click', () => {
 ipcRenderer.on('checklist-closed', () => {
   checklistOpen = false;
 });
+

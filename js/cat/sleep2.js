@@ -38,6 +38,7 @@ const sleep2 = {
     maxTime: 1800000,
     position: {right: '223px', top: '73.5px'},
     size: {width: '220px', height: '220px'},
-    rotation: -5
+    rotation: -5,
+    collarposition: {right: '223px', top: '73.5px'},
   
 }

@@ -18,6 +18,9 @@ let alwaysOnTopEnabled = store.get('alwaysOnTop', false);
 let win;
 let checklistWin;
 let roomWin;
+let catcolor = 'orange';
+let catshape = 'fluffy';
+let collarcolor = 'red';
 
 // ── window creation ───────────────────────────────────────
 
@@ -120,7 +123,7 @@ function createRoomWindow(x, y, name, code, creator) {
 
 function windowOnTop(alwaysOnTopEnabled, win){
   if (alwaysOnTopEnabled) {
-    win.setAlwaysOnTop(true, 'screen-saver');
+    win.setAlwaysOnTop(true, 'screen-saver', 1);
     win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   } else {
     win.setAlwaysOnTop(false);
@@ -226,6 +229,26 @@ ipcMain.on('timer-request-unblock', async () => {
   } catch (err) {
     console.error('Unblocking failed:', err);
   }
+});
+
+// ── cat skins ─────────────────────────────────────────────
+
+ipcMain.handle('get-cat-color', () => catcolor);
+
+ipcMain.handle('get-cat-shape', () => catshape);
+
+ipcMain.handle('get-collar-color', () => collarcolor);
+
+ipcMain.on('set-cat-color', (event, color) => {
+  catcolor = color;
+});
+
+ipcMain.on('set-cat-shape', (event, shape) => {
+  catshape = shape;
+});
+
+ipcMain.on('set-collar-color', (event, color) => {
+  collarcolor = color;
 });
 
 // ── app ───────────────────────────────────────────────────

@@ -1,15 +1,22 @@
 // cat.js
- 
-const animations = [eat];
-const catBody  = 'fluffy';
-const catColor = 'black';
-const collarcolor = 'red';
+
+const animations = [sleep2, eat];
 const collar = document.querySelector('.collar');
  
 let activeLayer  = null;
 let catContainer = null;
+let catBody;
+let catColor;
+let collarcolor;
 
- 
+// ─── load cat skin ───────────────────────────────────────────────────────────
+
+async function loadCatSkin() {
+  catBody     = await ipcRenderer.invoke('get-cat-shape');
+  catColor    = await ipcRenderer.invoke('get-cat-color');
+  collarcolor = await ipcRenderer.invoke('get-collar-color');
+}
+
 // ─── resolve frames ──────────────────────────────────────────────────────────
  
 function resolveFrames(frames) {
@@ -129,8 +136,4 @@ async function scheduleNext() {
     await playAnim(anim);
   }
 }
- 
-document.addEventListener('DOMContentLoaded', () => {
-  initCat();
-});
  
