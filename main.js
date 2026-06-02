@@ -120,6 +120,7 @@ function createRoomWindow(x, y, name, code, creator) {
     roomWin = null;
   });
   windowOnTop(alwaysOnTopEnabled, roomWin);
+  roomWin.webContents.openDevTools({ mode: 'detach' });
 }
 
 function windowOnTop(alwaysOnTopEnabled, win){

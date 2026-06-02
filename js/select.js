@@ -9,16 +9,6 @@ const skins = [
   // { shape: 'normal', color: 'tonkinese' },
   // { shape: 'normal', color: 'tuxedo' },
   { shape: 'normal', color: 'white' },
-  // { shape: 'fluffy', color: 'black' },
-  // { shape: 'fluffy', color: 'chinchilla' },
-  // { shape: 'fluffy', color: 'flamepoint' },
-  // { shape: 'fluffy', color: 'grey' },
-  // { shape: 'fluffy', color: 'mainecoon' },
-  // { shape: 'fluffy', color: 'orange' },
-  // { shape: 'fluffy', color: 'ragdoll' },
-  // { shape: 'fluffy', color: 'siberian' },
-  // { shape: 'fluffy', color: 'somali' },
-  // { shape: 'fluffy', color: 'white' },
 ];
 
 const collarColors = [

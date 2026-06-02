@@ -48,7 +48,6 @@ body {
     margin-left: auto;
     align-items: flex-end;
     cursor: pointer;
-    -webkit-app-region: no-drag;
     top: 5px;
     border: none;
     font-size: 10px;
@@ -58,6 +57,35 @@ body {
     flex-direction: column;
     gap: 5px;
 }
+
+.members-list {
+  position: absolute;
+  width: 100%;
+  height: 120px; /* enough room for cats */
+  pointer-events: none;
+}
+
+.member-cat {
+  position: absolute;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10px;
+}
+
+.member-cat img {
+  width: 425px;
+  height: 425px;
+  object-fit: contain;
+}
+
+/* tweak x/y to match your room background art */
+.pos1 { left: 17px;  top: -60px; } /* sitting on box */
+.pos2 { left: 20px;  top: -70px; } /* sitting on shelf */
+.pos3 { left: -27px;  top: -64px; } /* eating */
+.pos4 { left: 5px;  top: -80px; } /* eye mask */
+.pos5 { left: -20px;  top: -60px; } /* pulling */
+.pos6 { left: -27px;  top: -72px; } /* holding book */
+.pos7 { left: -27px;  top: -72px; } /* sleeping */
 
 .leaderboard-row {
     display: flex;
@@ -74,6 +102,7 @@ body {
     background-color: #eda3a3;
     right: 10px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.651);
+    -webkit-app-region: no-drag;
 }
 
 .leave-btn {
@@ -92,6 +121,7 @@ body {
     background-color: #eda3a3;
     border: none;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.651);
+    -webkit-app-region: no-drag;
 }
 
 .chat, .leaderboard-content{

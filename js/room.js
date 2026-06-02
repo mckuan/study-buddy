@@ -1,7 +1,7 @@
 const { ipcRenderer } = require('electron');
 const io = require('socket.io-client');
 
-const socket = io('http://localhost:3000');
+const socket = io('https://study-buddy-a9ke.onrender.com');
 
 const roomCode = document.querySelector('.room-code');
 const membersList = document.querySelector('.members-list');
@@ -19,42 +19,61 @@ const focus = document.querySelector('.focus-mode');
   const params = new URLSearchParams(window.location.search);
   const name = await ipcRenderer.invoke('get-player-name') || params.get('name') || 'Anonymous';
   const isCreator = params.get('creator') === 'true';
+  const cat = await ipcRenderer.invoke('get-cat-color');
 
   let currentCode = params.get('code') || '';
   let focusClicked = false;
   let studyInterval = null;
   let studyTime = 0;
+  const slots = new Array(7).fill(null);
+
+  function claimSlot(name, cat) {
+    const i = slots.findIndex(s => s === null);
+    if (i === -1) return;
+    slots[i] = name;
+    addMember(name, cat, i);
+  }
+
+  function freeSlot(name) {
+    const i = slots.findIndex(s => s === name);
+    if (i !== -1) slots[i] = null;
+  }
 
   // ── socket connection ─────────────────────────────────────
 
   socket.on('connect', () => {
     console.log('socket connected!');
     if (isCreator) {
-      socket.emit('create-room', { name });
+      socket.emit('create-room', { name, cat });
     } else {
-      socket.emit('join-room', { code: currentCode, name });
+      socket.emit('join-room', { code: currentCode, name, cat });
     }
   });
 
   socket.on('room-created', ({ code: roomCodeValue }) => {
-    console.log('room created:', roomCodeValue);
     currentCode = roomCodeValue;
     roomCode.textContent = `Room: ${roomCodeValue}`;
+    claimSlot(name, cat);
   });
 
   socket.on('room-joined', ({ code: roomCodeValue, members, messages }) => {
+    console.log('members received:', JSON.stringify(members));
     currentCode = roomCodeValue;
     roomCode.textContent = `Room: ${roomCodeValue}`;
-    members.forEach(m => addMember(m.name));
+    members.forEach((m, i) => {
+      slots[i] = m.name;
+      addMember(m.name, m.cat, i);
+    });
     messages.forEach(m => addMessage(m.name, m.text));
   });
 
-  socket.on('member-joined', ({ name }) => {
-    addMember(name);
+  socket.on('member-joined', ({ name, cat }) => {
+    claimSlot(name, cat);
     addMessage('', `${name} joined`);
   });
 
   socket.on('member-left', ({ name }) => {
+    freeSlot(name);
     removeMember(name);
     addMessage('', `${name} left`);
   });
@@ -138,11 +157,26 @@ const focus = document.querySelector('.focus-mode');
 
   // ── helpers ───────────────────────────────────────────────
 
-  function addMember(name) {
+  const POSITIONS = ['pos1', 'pos2', 'pos3', 'pos4', 'pos5', 'pos6', 'pos7'];
+
+  function addMember(name, cat, index) {
+    const slot = POSITIONS[index % POSITIONS.length];
     const div = document.createElement('div');
-    div.classList.add('member');
-    div.textContent = `👤 ${name}`;
+    div.classList.add('member-cat', slot);
     div.dataset.name = name;
+
+    const img = document.createElement('img');
+    const imgPath = `assets/room/${slot}/${cat}.png`;
+    console.log('cat image path:', imgPath, '| cat:', cat);
+    img.src = imgPath;
+    img.onerror = () => console.log('IMAGE FAILED TO LOAD:', img.src);
+    img.alt = name;
+
+    const label = document.createElement('span');
+    label.textContent = name;
+
+    div.appendChild(img);
+    div.appendChild(label);
     membersList.appendChild(div);
   }
 

@@ -10,6 +10,15 @@ const io = new Server(server, {
 
 const rooms = {};
 
+function assignSlot(room) {
+  const used = room.members.map(m => m.slot);
+  for (let i = 0; i < 7; i++) {
+    if (!used.includes(i)) return i;
+  }
+  return -1;
+}
+
+
 function generateCode() {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
@@ -19,10 +28,10 @@ io.on('connection', (socket) => {
 
   //when user creates room we generate a code as a key to look up room object data
   // we add member array and message array to room add user to this room
-  socket.on('create-room', ({ name }) => {
+  socket.on('create-room', ({ name, cat }) => {
     const code = generateCode();
     rooms[code] = {
-      members: [{ id: socket.id, name, studyTime: 0, focusStart: null }],
+      members: [{ id: socket.id, name, cat, studyTime: 0, focusStart: null }],
       messages: []
     };
     socket.join(code);
@@ -30,24 +39,15 @@ io.on('connection', (socket) => {
   });
 
   //when user clicks join room, if code is correct user enters room
-  socket.on('join-room', ({ code, name }) => {
-    const room = rooms[code.toUpperCase()];
-    if (!room) {
-      socket.emit('error', { message: 'Room not found!' });
-      return;
-    }
-    if (room.members.length >= 7) {
-      socket.emit('error', { message: 'Room is full!' });
-      return;
-    }
-    room.members.push({ id: socket.id, name });
+  socket.on('join-room', ({ code, name, cat }) => {
+  const room = rooms[code.toUpperCase()];
+  console.log('members when B joins:', JSON.stringify(room.members));
+    if (!room) { socket.emit('error', { message: 'Room not found!' }); return; }
+    if (room.members.length >= 7) { socket.emit('error', { message: 'Room is full!' }); return; }
+    room.members.push({ id: socket.id, name, cat });
     socket.join(code.toUpperCase());
-    socket.emit('room-joined', {
-      code,
-      members: room.members,
-      messages: room.messages
-    });
-    socket.to(code.toUpperCase()).emit('member-joined', { name });
+    socket.emit('room-joined', { code, members: room.members, messages: room.messages });
+    socket.to(code.toUpperCase()).emit('member-joined', { name, cat });  // <-- include cat
   });
 
   //when user sends message, label the message with the user name and time, and 
