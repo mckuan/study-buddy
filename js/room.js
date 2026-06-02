@@ -27,17 +27,6 @@ const focus = document.querySelector('.focus-mode');
   let studyTime = 0;
   const slots = new Array(7).fill(null);
 
-  function claimSlot(name, cat) {
-    const i = slots.findIndex(s => s === null);
-    if (i === -1) return;
-    slots[i] = name;
-    addMember(name, cat, i);
-  }
-
-  function freeSlot(name) {
-    const i = slots.findIndex(s => s === name);
-    if (i !== -1) slots[i] = null;
-  }
 
   // ── socket connection ─────────────────────────────────────
 
@@ -50,30 +39,31 @@ const focus = document.querySelector('.focus-mode');
     }
   });
 
-  socket.on('room-created', ({ code: roomCodeValue }) => {
-    currentCode = roomCodeValue;
-    roomCode.textContent = `Room: ${roomCodeValue}`;
-    claimSlot(name, cat);
-  });
-
   socket.on('room-joined', ({ code: roomCodeValue, members, messages }) => {
-    console.log('members received:', JSON.stringify(members));
     currentCode = roomCodeValue;
     roomCode.textContent = `Room: ${roomCodeValue}`;
-    members.forEach((m, i) => {
-      slots[i] = m.name;
-      addMember(m.name, m.cat, i);
+    members.forEach(m => {
+      slots[m.slot] = m.name;
+      addMember(m.name, m.cat, m.slot);
     });
     messages.forEach(m => addMessage(m.name, m.text));
   });
 
-  socket.on('member-joined', ({ name, cat }) => {
-    claimSlot(name, cat);
+  socket.on('room-created', ({ code: roomCodeValue }) => {
+    currentCode = roomCodeValue;
+    roomCode.textContent = `Room: ${roomCodeValue}`;
+    slots[0] = name;
+    addMember(name, cat, 0);
+  });
+
+  socket.on('member-joined', ({ name, cat, slot }) => {
+    slots[slot] = name;
+    addMember(name, cat, slot);
     addMessage('', `${name} joined`);
   });
 
-  socket.on('member-left', ({ name }) => {
-    freeSlot(name);
+  socket.on('member-left', ({ name, slot }) => {
+    slots[slot] = null;
     removeMember(name);
     addMessage('', `${name} left`);
   });

@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
   socket.on('create-room', ({ name, cat }) => {
     const code = generateCode();
     rooms[code] = {
-      members: [{ id: socket.id, name, cat, studyTime: 0, focusStart: null }],
+      members: [{ id: socket.id, name, cat, slot: 0, studyTime: 0, focusStart: null }],
       messages: []
     };
     socket.join(code);
@@ -40,14 +40,14 @@ io.on('connection', (socket) => {
 
   //when user clicks join room, if code is correct user enters room
   socket.on('join-room', ({ code, name, cat }) => {
-  const room = rooms[code.toUpperCase()];
-  console.log('members when B joins:', JSON.stringify(room.members));
+    const room = rooms[code.toUpperCase()];
     if (!room) { socket.emit('error', { message: 'Room not found!' }); return; }
     if (room.members.length >= 7) { socket.emit('error', { message: 'Room is full!' }); return; }
-    room.members.push({ id: socket.id, name, cat });
+    const slot = assignSlot(room); // you already have this function
+    room.members.push({ id: socket.id, name, cat, slot });
     socket.join(code.toUpperCase());
     socket.emit('room-joined', { code, members: room.members, messages: room.messages });
-    socket.to(code.toUpperCase()).emit('member-joined', { name, cat });  // <-- include cat
+    socket.to(code.toUpperCase()).emit('member-joined', { name, cat, slot }); // send slot
   });
 
   //when user sends message, label the message with the user name and time, and 
@@ -65,9 +65,11 @@ io.on('connection', (socket) => {
   socket.on('leave-room', ({ code, name }) => {
     const room = rooms[code];
     if (!room) return;
+    const member = room.members.find(m => m.id === socket.id);
+    const slot = member?.slot;
     room.members = room.members.filter(m => m.id !== socket.id);
     socket.leave(code);
-    socket.to(code).emit('member-left', { name });
+    socket.to(code).emit('member-left', { name, slot }); // send slot
     if (room.members.length === 0) delete rooms[code];
   });
 
@@ -78,8 +80,9 @@ io.on('connection', (socket) => {
       const room = rooms[code];
       const member = room.members.find(m => m.id === socket.id);
       if (member) {
+        const slot = member.slot;
         room.members = room.members.filter(m => m.id !== socket.id);
-        socket.to(code).emit('member-left', { name: member.name });
+        socket.to(code).emit('member-left', { name: member.name, slot }); // send slot
         if (room.members.length === 0) delete rooms[code];
       }
     });
