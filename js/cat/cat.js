@@ -12,9 +12,9 @@ let collarcolor;
 // ─── load cat skin ───────────────────────────────────────────────────────────
 
 async function loadCatSkin() {
-  catBody     = await ipcRenderer.invoke('get-cat-shape');
-  catColor    = await ipcRenderer.invoke('get-cat-color');
-  collarcolor = await ipcRenderer.invoke('get-collar-color');
+  catBody     = await window.api.getCatShape();
+  catColor    = await window.api.getCatColor();
+  collarcolor = await window.api.getCollarColor();
 }
 
 // ─── resolve frames ──────────────────────────────────────────────────────────

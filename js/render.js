@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron');
-
 const frame = document.querySelector('.frame');
 const content = document.querySelector('.content');
 const closebutton = document.querySelector('.close-btn');
@@ -33,25 +31,25 @@ frame.addEventListener('mouseout', (e) => {
 // ---------------- WINDOW CONTROLS ----------------
 
 closebutton.addEventListener('click', () => {
-  ipcRenderer.send('close-checklist');
+  window.api.closeChecklist();
   window.close();
 });
 
 minimizebutton.addEventListener('click', () => {
-  ipcRenderer.send('minimize-window');
+  window.api.minimizeWindow();
 });
 
 checklistbutton.addEventListener('click', () => {
   if (!checklistOpen) {
-    ipcRenderer.send('open-checklist');
+    window.api.openChecklist();
     checklistOpen = true;
   } else {
-    ipcRenderer.send('close-checklist');
+    window.api.closeChecklist();
     checklistOpen = false;
   }
 });
 
-ipcRenderer.on('checklist-closed', () => {
+window.api.on('checklist-closed', () => {
   checklistOpen = false;
 });
 

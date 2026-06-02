@@ -1,5 +1,5 @@
 const skins = [
-  // { shape: 'normal', color: 'black' },
+  { shape: 'normal', color: 'black' },
   { shape: 'normal', color: 'browntabby' },
   // { shape: 'normal', color: 'calico' },
   // { shape: 'normal', color: 'cream' },
@@ -84,10 +84,10 @@ document.getElementById('skin-go').addEventListener('click', async () => {
     return;
   }
 
-  ipcRenderer.send('set-cat-shape', skin.shape);
-  ipcRenderer.send('set-cat-color', skin.color);
-  ipcRenderer.send('set-collar-color', selectedCollar);
-  ipcRenderer.send('set-player-name', name);
+  window.api.setCatShape(skin.shape);
+  window.api.setCatColor(skin.color);
+  window.api.setCollarColor(selectedCollar);
+  window.api.setPlayerName(name);
 
   catBody     = skin.shape;
   catColor    = skin.color;

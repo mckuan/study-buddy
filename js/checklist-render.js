@@ -1,4 +1,3 @@
-const { ipcRenderer } = require('electron'); 
 const input = document.querySelector('.input-text');
 const checklistItemsContainer = document.querySelector('.checklist-items');
 const completeItemsContainer = document.querySelector('.complete-items');
@@ -10,8 +9,22 @@ let dateKey = getDateKey(0);
 
 dateBtn.textContent = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ▾';
 
-let checklistItems = JSON.parse(localStorage.getItem('checklistItems')) || {};
-let completeItems = JSON.parse(localStorage.getItem('completeItems')) || {};
+// loading — make the init async
+let checklistItems = {};
+let completeItems = {};
+
+(async () => {
+  checklistItems = await window.api.getChecklist();
+  completeItems = await window.api.getCompletelist();
+  renderChecklist();
+  renderDateOptions();
+})();
+
+// saving
+function saveChecklistItems() {
+  window.api.saveChecklist({ checklistItems, completeItems });
+}
+
 console.log('loaded:', checklistItems);
 
 function getDateKey(offset = 0) {
@@ -102,11 +115,6 @@ function renderChecklist() {
   }); 
 }
 
-function saveChecklistItems() {
-  localStorage.setItem('checklistItems', JSON.stringify(checklistItems));
-  localStorage.setItem('completeItems', JSON.stringify(completeItems));
-}
-
 
 input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && input.value.trim() !== '') {
@@ -145,9 +153,5 @@ function renderDateOptions() {
 }
 
 document.addEventListener('click', (e) => {
-  ipcRenderer.send('focus-checklist-window');
+  window.api.focusChecklist();
 });
-
-
-renderChecklist();
-renderDateOptions();

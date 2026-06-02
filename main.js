@@ -4,6 +4,7 @@ process.emit = function(event, warning) {
   return originalEmit.apply(process, arguments);
 };
 
+const path = require('path');
 const { app, BrowserWindow, ipcMain, } = require('electron');
 const Store = require('electron-store');
 const store = new Store();
@@ -41,8 +42,9 @@ function createWindow() {
     alwaysOnTop: true,
     resizable: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
   windowState.manage(win);
@@ -50,6 +52,7 @@ function createWindow() {
   win.setIgnoreMouseEvents(false);
   win.setAlwaysOnTop(true, 'screen-saver');
   windowOnTop(alwaysOnTopEnabled, win);
+  win.webContents.openDevTools({ mode: 'detach' });
 }
 
 function createChecklistWindow() {
@@ -71,8 +74,9 @@ function createChecklistWindow() {
     resizable: false,
     show: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
   checklistState.manage(checklistWin);
@@ -104,8 +108,9 @@ function createRoomWindow(x, y, name, code, creator) {
     alwaysOnTop: true,
     resizable: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
@@ -179,8 +184,8 @@ ipcMain.on('leave-room', () => {
 
 // ── settings ──────────────────────────────────────────────
 
-ipcMain.on('get-blocking-enabled', (event) => {
-  event.reply('blocking-enabled-state', { enabled: getBlockingEnabled() });
+ipcMain.handle('get-blocking-enabled', () => {
+  return getBlockingEnabled();
 });
 
 ipcMain.on('settings-toggle-blocking', async (event, { enabled }) => {
@@ -259,6 +264,15 @@ ipcMain.on('set-player-name', (event, name) => {
 
 ipcMain.handle('get-player-name', () => {
   return name;
+});
+
+// ── checklist  ────────────────────────────────────────────
+
+ipcMain.handle('get-checklist', () => store.get('checklistItems', {}));
+ipcMain.handle('get-completelist', () => store.get('completeItems', {}));
+ipcMain.on('save-checklist', (_, { checklistItems, completeItems }) => {
+  store.set('checklistItems', checklistItems);
+  store.set('completeItems', completeItems);
 });
 
 // ── app ───────────────────────────────────────────────────

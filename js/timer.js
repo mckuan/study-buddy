@@ -53,13 +53,13 @@ function pauseTimer() {
   if (isPaused) {
     isPaused = false;
     pauseBtn.textContent = '⏸';
-    ipcRenderer.send('timer-request-block');
+    window.api.requestBlock();
     startTimer(remainingTime);
   } else {
     clearInterval(timerInterval);
     isPaused = true;
     pauseBtn.textContent = '▶';
-    ipcRenderer.send('timer-request-unblock');
+    window.api.requestUnblock();
   }
 }
 
@@ -67,7 +67,7 @@ function stopTimer() {
   clearInterval(timerInterval);
   remainingTime = 0;
   isPaused = false;
-  ipcRenderer.send('timer-request-unblock');
+  window.api.requestUnblock();
   settingsblur.style.display = 'none';
   timerDisplay.textContent = '00:00';
   incrementBtn.style.display = 'flex';
@@ -86,7 +86,7 @@ startBtn.addEventListener('click', () => {
   pauseBtn.style.display = 'flex';
   stopBtn.style.display = 'flex';
   startBtn.style.display = 'none';
-  ipcRenderer.send('timer-request-block');
+  window.api.requestBlock();
   startTimer();
 });
 

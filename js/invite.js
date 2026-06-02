@@ -3,9 +3,6 @@ const inviteContent = document.querySelector('.invite-content');
 const createInvite = document.querySelector('.create-invite');
 const enterCode = document.querySelector('.enter-code');
 
-let userName = localStorage.getItem('userName') || 'User';
-localStorage.setItem('userName', userName);
-
 // ---------------- INVITE TOGGLE ----------------
 
 invite.addEventListener('click', () => {
@@ -14,9 +11,10 @@ invite.addEventListener('click', () => {
 
 // ---------------- CREATE ROOM ----------------
 
-createInvite.addEventListener('click', () => {
+createInvite.addEventListener('click', async () => {
+  const userName = await window.api.getPlayerName() || 'Anonymous';
   console.log('create room clicked');
-  ipcRenderer.send('open-room', {
+  window.api.openRoom({
     name: userName,
     creator: true,
     code: ''
@@ -25,9 +23,10 @@ createInvite.addEventListener('click', () => {
 
 // ---------------- JOIN ROOM ----------------
 
-enterCode.addEventListener('keydown', (e) => {
+enterCode.addEventListener('keydown', async (e) => {
   if (e.key === 'Enter' && enterCode.value.trim()) {
-    ipcRenderer.send('open-room', {
+    const userName = await window.api.getPlayerName() || 'Anonymous';
+    window.api.openRoom({
       name: userName,
       creator: false,
       code: enterCode.value.trim().toUpperCase()

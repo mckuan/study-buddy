@@ -1,5 +1,4 @@
-const { ipcRenderer } = require('electron');
-const io = require('socket.io-client');
+
  
 const socket = io('https://study-buddy-a9ke.onrender.com');
  
@@ -17,9 +16,9 @@ const focus = document.querySelector('.focus-mode');
  
 (async () => {
   const params = new URLSearchParams(window.location.search);
-  const name = await ipcRenderer.invoke('get-player-name') || params.get('name') || 'Anonymous';
+  const name = await window.api.getPlayerName() || params.get('name') || 'Anonymous';
   const isCreator = params.get('creator') === 'true';
-  const cat = await ipcRenderer.invoke('get-cat-color');
+  const cat = await window.api.getCatColor();
  
   let currentCode = params.get('code') || '';
   let focusClicked = false;
@@ -119,8 +118,8 @@ const focus = document.querySelector('.focus-mode');
  
   leaveBtn.addEventListener('click', () => {
     socket.emit('leave-room', { code: currentCode, name });
-    ipcRenderer.send('timer-request-unblock');
-    ipcRenderer.send('leave-room');
+    window.api.requestUnblock();
+    window.api.leaveRoom();
   });
  
   // ── focus mode ────────────────────────────────────────────
@@ -129,12 +128,12 @@ const focus = document.querySelector('.focus-mode');
     if (focusClicked) {
       focus.style.backgroundColor = '#eda3a3';
       focusClicked = false;
-      ipcRenderer.send('timer-request-unblock');
+      window.api.requestUnblock();
       socket.emit('focus-stop', { code: currentCode });
     } else {
       focus.style.backgroundColor = '#7379e2';
       focusClicked = true;
-      ipcRenderer.send('timer-request-block');
+      window.api.requestBlock();
       socket.emit('focus-start', { code: currentCode });
     }
   });

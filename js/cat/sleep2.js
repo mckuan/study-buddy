@@ -34,6 +34,7 @@ const sleep2 = {
     outro: (body, color) =>[],
 
     fps: 180,
+    //15-30 min
     minTime: 900000,
     maxTime: 1800000,
     position: {right: '223px', top: '73.5px'},

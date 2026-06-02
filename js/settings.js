@@ -19,9 +19,9 @@ settingsBtn.addEventListener('click', async () => {
   blur.style.display = 'block';
   settings.style.display = 'block';
   alwaysOnTopToggle.checked =
-    await ipcRenderer.invoke('get-always-on-top');
-  ipcRenderer.send('get-blocking-enabled');
-  blockedsites = await ipcRenderer.invoke('get-blocked-sites');
+    await window.api.getAlwaysOnTop();
+  blockingToggle.checked = await window.api.getBlockingEnabled();
+  blockedsites = await window.api.getBlockedSites();
   renderDropdown();
 });
 
@@ -33,25 +33,25 @@ closesettings.addEventListener('click', () => {
 // ---------------- ALWAYS ON TOP ----------------
 
 alwaysOnTopToggle.addEventListener('change', () => {
-  ipcRenderer.send('toggle-always-on-top', {enabled: alwaysOnTopToggle.checked});
+  window.api.toggleAlwaysOnTop(alwaysOnTopToggle.checked);
 });
 
 // ---------------- BLOCKING ----------------
 
 // Reflect the persisted state when settings opens
-ipcRenderer.on('blocking-enabled-state', (_, { enabled }) => {
+window.api.on('blocking-enabled-state', ({ enabled }) => {
   blockingToggle.checked = enabled;
 });
 
 blockingToggle.addEventListener('change', () => {
-  ipcRenderer.send('settings-toggle-blocking', { enabled: blockingToggle.checked });
+  window.api.toggleBlocking(blockingToggle.checked);
 });
 
-ipcRenderer.on('settings-toggle-success', (_, { enabled }) => {
+window.api.on('settings-toggle-success', ({ enabled }) => {
   blockingToggle.checked = enabled;
 });
 
-ipcRenderer.on('settings-toggle-failed', (_, { wrongPassword }) => {
+window.api.on('settings-toggle-failed', ({ wrongPassword }) => {
   blockingToggle.checked = false; 
   if (wrongPassword) {
     errorPopup.style.display = 'block';
@@ -77,7 +77,7 @@ function renderDropdown() {
     deleteBtn.classList.add('delete-btn');
     deleteBtn.addEventListener('click', () => {
       blockedsites.splice(index, 1);
-      ipcRenderer.send('update-blocked-sites', blockedsites);
+      window.api.updateBlockedSites(blockedsites);
       renderDropdown();
     });
 
@@ -89,7 +89,7 @@ function renderDropdown() {
 inputContainer.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && inputContainer.value.trim()) {
     blockedsites.push(inputContainer.value.trim());
-    ipcRenderer.send('update-blocked-sites', blockedsites);
+    window.api.updateBlockedSites(blockedsites);
     inputContainer.value = '';
     renderDropdown();
   }
