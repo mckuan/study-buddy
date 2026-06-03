@@ -85,7 +85,8 @@ Building Study Buddy taught me how to:
 
 1. Download the latest `.dmg` from the Releases page => https://github.com/mckuan/study-buddy/releases/tag/v0.9.0
 3. Move Study Buddy into your Applications folder.
-4. Launch the application.
+4. run "sudo xattr -cr /Applications/Study\ Buddy.app" in your terminal
+5. Launch the application.
 
 ### Important Notes
 
