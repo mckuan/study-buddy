@@ -1,8 +1,8 @@
-# Study Buddy 🐱
+# Study Buddy 
 
 A cozy desktop productivity companion that combines focus sessions, website blocking, daily task management, and shared study rooms with an animated virtual cat.
 
-![Study Buddy Screenshot](./screenshots/main-room.png)
+<img width="976" height="696" alt="Screen Recording 2026-06-02 at 9" src="https://github.com/user-attachments/assets/c982bf88-e319-496d-bd48-85899dc4e729" />
 
 ## Features
 
@@ -83,9 +83,9 @@ Building Study Buddy taught me how to:
 
 ### macOS
 
-1. Download the latest `.dmg` from the Releases page.
-2. Move Study Buddy into your Applications folder.
-3. Launch the application.
+1. Download the latest `.dmg` from the Releases page => https://github.com/mckuan/study-buddy/releases/tag/v0.9.0
+3. Move Study Buddy into your Applications folder.
+4. Launch the application.
 
 ### Important Notes
 
@@ -115,16 +115,37 @@ If macOS prevents the application from opening:
 
 ## Screenshots
 
+
+### Welcome
+
+<img width="532" height="392" alt="Screenshot 2026-06-02 at 10 54 52 PM" src="https://github.com/user-attachments/assets/34ac9d33-82d9-48a2-b26d-686b94df5cb3" />
+
 ### Main Room
 
-(Add screenshot)
+<img width="532" height="392" alt="Screenshot 2026-06-02 at 10 58 24 PM" src="https://github.com/user-attachments/assets/8236a533-5bb6-4df0-934d-99c38f369da4" />
+
+### Checklist
+
+<img width="663" height="256" alt="Screenshot 2026-06-02 at 10 52 24 PM" src="https://github.com/user-attachments/assets/05184f2e-cf11-47aa-a413-a4ec76f28fa3" />
 
 ### Focus Timer
 
-(Add screenshot)
+<img width="532" height="392" alt="Screenshot 2026-06-02 at 10 51 56 PM" src="https://github.com/user-attachments/assets/a793c83a-77bd-44f0-a556-abdb569c60b7" />
+
+### Settings
+
+<img width="532" height="392" alt="Screenshot 2026-06-02 at 10 52 37 PM" src="https://github.com/user-attachments/assets/7431166b-6597-4829-a8cd-be205845c3a2" />
 
 ### Shared Study Room
 
-(Add screenshot)
+<img width="532" height="392" alt="Screenshot 2026-06-02 at 10 52 41 PM" src="https://github.com/user-attachments/assets/8a7a6853-73d0-4aa2-b830-e84679b33fdd" />
 
+<img width="512" height="362" alt="Screenshot 2026-06-02 at 10 55 21 PM" src="https://github.com/user-attachments/assets/37137ac5-19cb-4983-8335-cd5da8679c90" />
 
+### Chat
+
+<img width="512" height="362" alt="Screenshot 2026-06-02 at 10 55 39 PM" src="https://github.com/user-attachments/assets/aee1be50-47a0-416d-8f5a-91e84ed986c8" />
+
+### Focus and Leaderboard
+
+<img width="512" height="362" alt="Screenshot 2026-06-02 at 10 55 31 PM" src="https://github.com/user-attachments/assets/5d531223-6a79-4220-983f-98c7283cc580" />
