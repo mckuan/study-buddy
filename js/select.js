@@ -93,9 +93,22 @@ document.getElementById('skin-go').addEventListener('click', async () => {
   catColor    = skin.color;
   collarcolor = selectedCollar;
 
-  document.getElementById('skin-selector').style.display = 'none';
+  document.getElementById('skin-selector').style.display = 'none'; // hide it
   initCat();
 });
-updateSkinDisplay();
-updateCollarDisplay();
- 
+
+(async () => {
+  const savedName = await window.api.getPlayerName();
+  const savedCat = await window.api.getCatColor();
+
+  if (savedName && savedCat) {
+    // already set up — skip the selector
+    document.getElementById('skin-selector').style.display = 'none';
+    await loadCatSkin();
+    initCat();
+  } else {
+    // first launch — show the selector
+    updateSkinDisplay();
+    updateCollarDisplay();
+  }
+})();

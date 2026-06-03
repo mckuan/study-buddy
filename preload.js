@@ -36,6 +36,10 @@ contextBridge.exposeInMainWorld('api', {
   getBlockedSites: () => ipcRenderer.invoke('get-blocked-sites'),
   updateBlockedSites: (sites) => ipcRenderer.send('update-blocked-sites', sites),
 
+  // first time check (render.js)
+  getFirstTime: () => ipcRenderer.invoke('get-first-time'),
+  setFirstTime: (value) => ipcRenderer.send('set-first-time', value),
+  
   //checklist (checklist-render.js)
   getChecklist: () => ipcRenderer.invoke('get-checklist'),
   getCompletelist: () => ipcRenderer.invoke('get-completelist'),

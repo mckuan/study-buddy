@@ -19,9 +19,10 @@ let alwaysOnTopEnabled = store.get('alwaysOnTop', false);
 let win;
 let checklistWin;
 let roomWin;
-let catcolor = 'orange';
-let catshape = 'fluffy';
-let collarcolor = 'red';
+let catcolor = store.get('catColor', '');
+console.log('loaded catcolor from store:', catcolor);
+let catshape = store.get('catShape', '');
+let collarcolor = store.get('collarColor', '');
 let name = store.get('playerName', '');
 
 // ── window creation ───────────────────────────────────────
@@ -52,7 +53,6 @@ function createWindow() {
   win.setIgnoreMouseEvents(false);
   win.setAlwaysOnTop(true, 'screen-saver');
   windowOnTop(alwaysOnTopEnabled, win);
-  win.webContents.openDevTools({ mode: 'detach' });
 }
 
 function createChecklistWindow() {
@@ -83,7 +83,6 @@ function createChecklistWindow() {
   checklistWin.loadFile('checklist.html');
   checklistWin.setIgnoreMouseEvents(false);
   checklistWin.setAlwaysOnTop(true, 'screen-saver');
-  windowOnTop(alwaysOnTopEnabled, checklistWin);
 
   checklistWin.once('ready-to-show', () => {
     checklistWin.show();
@@ -125,7 +124,6 @@ function createRoomWindow(x, y, name, code, creator) {
     roomWin = null;
   });
   windowOnTop(alwaysOnTopEnabled, roomWin);
-  roomWin.webContents.openDevTools({ mode: 'detach' });
 }
 
 function windowOnTop(alwaysOnTopEnabled, win){
@@ -240,7 +238,10 @@ ipcMain.on('timer-request-unblock', async () => {
 
 // ── cat skins ─────────────────────────────────────────────
 
-ipcMain.handle('get-cat-color', () => catcolor);
+ipcMain.handle('get-cat-color', () => {
+  console.log('get-cat-color returning:', catcolor);
+  return catcolor;
+});
 
 ipcMain.handle('get-cat-shape', () => catshape);
 
@@ -248,23 +249,28 @@ ipcMain.handle('get-collar-color', () => collarcolor);
 
 ipcMain.on('set-cat-color', (event, color) => {
   catcolor = color;
+  store.set('catColor', color);
 });
 
 ipcMain.on('set-cat-shape', (event, shape) => {
   catshape = shape;
+  store.set('catShape', shape);
 });
 
 ipcMain.on('set-collar-color', (event, color) => {
   collarcolor = color;
+  store.set('collarColor', color);
 });
 
-ipcMain.on('set-player-name', (event, name) => {
-  store.set('playerName', name);
+ipcMain.on('set-player-name', (event, playerName) => {
+  name = playerName;
+  store.set('playerName', playerName);
 });
 
 ipcMain.handle('get-player-name', () => {
   return name;
 });
+
 
 // ── checklist  ────────────────────────────────────────────
 

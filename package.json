@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +17,33 @@
     "keytar": "^7.9.0",
     "socket.io-client": "^4.8.3"
   },
+  "build": {
+    "appId": "com.yourcompany.studybuddy",
+    "productName": "Study Buddy",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg",
+      "icon": "assets/icon.icns",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    },
+    "icon": "assets/icon.icns",
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "checklist.html",
+      "room.html",
+      "js/**/*",
+      "css/**/*",
+      "hosts.js",
+      "assets/**/*",
+      "server/**/*",
+      "!node_modules/.cache"
+    ]
+  },
   "devDependencies": {
-    "electron": "^33.0.0"
+    "electron": "^33.0.0",
+    "electron-builder": "^26.8.1"
   }
 }
