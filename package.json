@@ -1,7 +1,7 @@
 {
   "name": "study-buddy",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.9.0",
+  "description": "Study Buddy is an Electron desktop productivity app featuring a virtual pet, focus sessions, website blocking, and real-time shared study rooms.",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,8 +9,8 @@
     "build": "electron-builder"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Michelle Kuan",
+  "license": "MIT",
   "dependencies": {
     "electron-store": "^8.2.0",
     "electron-window-state": "^5.0.3",

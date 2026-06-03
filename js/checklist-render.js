@@ -1,18 +1,26 @@
+// ── DOM references ────────────────────────────────────────
+
 const input = document.querySelector('.input-text');
 const checklistItemsContainer = document.querySelector('.checklist-items');
 const completeItemsContainer = document.querySelector('.complete-items');
 const dateBtn = document.querySelector('.date-btn');
 const dropdown = document.querySelector('.dropdown');
 const checklistclose = document.querySelector('.checklist-close');
-const date = new Date();
-let dateKey = getDateKey(0);
 
+// ── state ─────────────────────────────────────────────────
+
+const date = new Date();
+let dateKey = getDateKey(0); // default to today
+
+let checklistItems = {}; // pending tasks, keyed by date string
+let completeItems = {};  // completed tasks, keyed by date string
+
+// set initial date button label
 dateBtn.textContent = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ▾';
 
-// loading — make the init async
-let checklistItems = {};
-let completeItems = {};
+// ── init ──────────────────────────────────────────────────
 
+// load persisted data from main process via electron-store, then render
 (async () => {
   checklistItems = await window.api.getChecklist();
   completeItems = await window.api.getCompletelist();
@@ -20,32 +28,43 @@ let completeItems = {};
   renderDateOptions();
 })();
 
-// saving
+// ── persistence ───────────────────────────────────────────
+
+// persist both lists to electron-store via IPC
 function saveChecklistItems() {
   window.api.saveChecklist({ checklistItems, completeItems });
 }
 
-console.log('loaded:', checklistItems);
+// ── date key ──────────────────────────────────────────────
 
+// returns a YYYY-MM-DD date string for today + offset days.
+// uses local date parts instead of ISO string to avoid UTC shifting the date.
 function getDateKey(offset = 0) {
   const d = new Date();
   d.setDate(d.getDate() + offset);
-  // Use local date parts instead of ISO string (which is UTC)
   const yyyy = d.getFullYear();
   const mm = String(d.getMonth() + 1).padStart(2, '0');
   const dd = String(d.getDate()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd}`;
 }
 
+// ── render ────────────────────────────────────────────────
+
+// rebuilds both the pending and completed task lists from state for the active dateKey.
+// called after any state change (add, complete, delete, date switch).
 function renderChecklist() {
+  // ensure arrays exist for this date before rendering
   checklistItems[dateKey] = checklistItems[dateKey] || [];
   completeItems[dateKey] = completeItems[dateKey] || [];
-  
+
+  // ── pending tasks ──────────────────────────────────────
+
   checklistItemsContainer.innerHTML = '';
   checklistItems[dateKey].forEach((item, index) => {
     const itemElement = document.createElement('div');
     itemElement.classList.add('checklist-item');
-    
+
+    // checking the box moves the item to completeItems
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = false;
@@ -57,31 +76,34 @@ function renderChecklist() {
       saveChecklistItems();
       renderChecklist();
     });
-    
+
     const text = document.createElement('span');
     text.textContent = item.text;
 
+    // delete button permanently removes the task
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'x';
-    deleteBtn.classList.add('delete-btn')
+    deleteBtn.classList.add('delete-btn');
     deleteBtn.addEventListener('click', () => {
-      checklistItems[dateKey].splice(index, 1); 
+      checklistItems[dateKey].splice(index, 1);
       saveChecklistItems();
       renderChecklist();
     });
-    
+
     itemElement.appendChild(checkbox);
     itemElement.appendChild(text);
     itemElement.appendChild(deleteBtn);
     checklistItemsContainer.appendChild(itemElement);
-  }); 
+  });
 
-  //Render completed tasks
+  // ── completed tasks ────────────────────────────────────
+
   completeItemsContainer.innerHTML = '';
   completeItems[dateKey].forEach((item, index) => {
     const itemElement = document.createElement('div');
     itemElement.classList.add('complete-item');
 
+    // unchecking moves the item back to checklistItems
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = true;
@@ -89,11 +111,12 @@ function renderChecklist() {
       const currItem = completeItems[dateKey][index];
       currItem.completed = false;
       completeItems[dateKey].splice(index, 1);
-      checklistItems[dateKey].push(currItem); 
+      checklistItems[dateKey].push(currItem);
       saveChecklistItems();
       renderChecklist();
     });
 
+    // strikethrough styling applied inline to mark task as done
     const text = document.createElement('span');
     text.textContent = item.text;
     text.style.textDecoration = 'line-through';
@@ -101,7 +124,7 @@ function renderChecklist() {
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'x';
-    deleteBtn.classList.add('delete-btn')
+    deleteBtn.classList.add('delete-btn');
     deleteBtn.addEventListener('click', () => {
       completeItems[dateKey].splice(index, 1);
       saveChecklistItems();
@@ -112,10 +135,12 @@ function renderChecklist() {
     itemElement.appendChild(text);
     itemElement.appendChild(deleteBtn);
     completeItemsContainer.appendChild(itemElement);
-  }); 
+  });
 }
 
+// ── add task ──────────────────────────────────────────────
 
+// pressing Enter on the input adds a new pending task for the active date
 input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && input.value.trim() !== '') {
     checklistItems[dateKey] = checklistItems[dateKey] || [];
@@ -127,6 +152,10 @@ input.addEventListener('keydown', (e) => {
   }
 });
 
+// ── date picker ───────────────────────────────────────────
+
+// clicking the date button shows the dropdown and hides the button itself.
+// guard on e.target prevents child elements from triggering this accidentally.
 dateBtn.addEventListener('click', (e) => {
   if (e.target === dateBtn) {
     dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
@@ -134,6 +163,8 @@ dateBtn.addEventListener('click', (e) => {
   }
 });
 
+// populates the date dropdown with buttons for today + next few days.
+// selecting a date updates dateKey and re-renders the checklist for that day.
 function renderDateOptions() {
   const dayButtons = dropdown.querySelectorAll('button');
   dayButtons.forEach((btn, index) => {
@@ -152,6 +183,10 @@ function renderDateOptions() {
   });
 }
 
-document.addEventListener('click', (e) => {
+// ── window focus ──────────────────────────────────────────
+
+// any click in the checklist window refocuses it via IPC,
+// preventing the main window from stealing focus
+document.addEventListener('click', () => {
   window.api.focusChecklist();
 });

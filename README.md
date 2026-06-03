@@ -1,112 +1,130 @@
-# Study Buddy Cat
+# Study Buddy 🐱
 
-A desktop study companion that combines website blocking, a virtual pet cat, and a shared study room experience to help users stay focused while studying.
+A cozy desktop productivity companion that combines focus sessions, website blocking, daily task management, and shared study rooms with an animated virtual cat.
+
+![Study Buddy Screenshot](./screenshots/main-room.png)
 
 ## Features
 
-* Website blocking during study sessions
+### 🐾 Virtual Study Cat
+
 * Animated desktop cat companion
-* Study room environment
-* Timer-based focus sessions
-* Customizable cat selection
-* Desktop overlay experience
+* Multiple animations and activity states
+* Customizable appearance options
 
----
+### ⏰ Focus Sessions
 
-## What's Next
+* Customizable focus timer
+* Track focus time and productivity
+* Track how much you and your friends are studying
 
-### Welcome Page
+### 🚫 Website Blocking
 
-Create a first-time setup experience that allows users to:
+* Block distracting websites during focus sessions
+* Uses system-level hosts file modification
+* Secure credential storage through the OS keychain
 
-* Enter their name
-* Select their preferred cat companion
-* Configure initial preferences
+### 📝 Daily Checklist
 
-### Shared Study Room Animations
+* Create and manage daily tasks
+* Track completed items
+* Persistent storage via electron-store
 
-Implement synchronized animations within the study room environment so that cats can interact and move naturally while users study together.
+### 🏠 Shared Study Rooms
 
-### Server Deployment
-
-Move the backend off localhost and deploy it to a hosted environment for easier access and improved scalability.
-
-### Post-Deployment Testing
-
-Conduct additional testing of the study room system after deployment to identify synchronization, networking, and usability issues.
-
-### Additional Improvements
-
-* Bug fixes and stability improvements
-* UI polish and onboarding improvements
-* Expanded customization options
-* Performance optimization
-* room and main window share windowstate
-* tutorial 
-
----
-
-## Running the Project
-
-### Start the Backend
-
-```bash
-cd server
-node server.js
-```
-
-### Start the Frontend
-
-In a separate terminal:
-
-```bash
-npm start
-```
-
----
+* Create and join private study rooms
+* Real-time chat
+* Live leaderboard updates
+* Collaborative study environment
 
 ## Tech Stack
 
+### Frontend
+
 * Electron
+* HTML
+* CSS
 * JavaScript
+
+### Backend
+
 * Node.js
 * Express
-* Socket-based real-time communication
+* Socket.IO
 
----
+### Storage & Security
 
-## Development Status
+* Electron Store
+* Keytar
 
-This project is currently under active development. Core functionality is implemented, and current work is focused on improving stability, onboarding, deployment, and collaborative study room features.
+### Deployment
 
+* GitHub Releases
+* Render
 
----
+## Why I Built This
 
-## What it Looks Like Now
+I wanted a study tool that felt more engaging than a traditional timer or to-do list. Study Buddy combines productivity features with a virtual pet and shared study spaces to make studying feel more rewarding. Along the way, it became my largest software engineering project and a way to explore desktop application development.
 
-animation
-<img width="800" height="589" alt="ScreenRecording2026-05-29at11 39 36PM-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/8498b386-e790-4e9f-bed4-c6403f05c321" />
+## What I Learned
 
-main functions
-<img width="417" height="268" alt="Screenshot 2026-05-29 at 11 51 38 PM" src="https://github.com/user-attachments/assets/e339da17-2527-45b4-8960-62a27e7cc145" />
+Building Study Buddy taught me how to:
 
-<img width="417" height="268" alt="Screenshot 2026-05-29 at 11 51 54 PM" src="https://github.com/user-attachments/assets/5a7e3567-4f11-499d-8a3a-65f55637deae" />
+* Design Electron applications using main processes, renderer processes, and preload scripts
+* Build secure IPC communication between application layers
+* Implement Electron security best practices including context isolation and restricted APIs
+* Work with operating system features such as the hosts file, system permissions, and secure credential storage
+* Build real-time multiplayer systems using Socket.IO
+* Apply server-side validation, sanitization, rate limiting, and CORS protections
+* Manage persistent application state and user settings
+* Package and distribute desktop applications through GitHub Releases
 
-<img width="417" height="268" alt="Screenshot 2026-05-29 at 11 51 21 PM" src="https://github.com/user-attachments/assets/964a8065-511e-4060-b393-90b3e1a29b39" />
+## Installation
 
-<img width="417" height="268" alt="Screenshot 2026-05-29 at 11 52 08 PM" src="https://github.com/user-attachments/assets/3a5916d3-e51c-4075-8de6-c48a41cc2f42" />
+### macOS
 
-<img width="417" height="268" alt="Screenshot 2026-05-29 at 11 52 27 PM" src="https://github.com/user-attachments/assets/728972a7-6cf4-4768-88eb-4116ece229e7" />
+1. Download the latest `.dmg` from the Releases page.
+2. Move Study Buddy into your Applications folder.
+3. Launch the application.
 
-Shared study room -> after clicking invite button
+### Important Notes
 
-<img width="417" height="268" alt="Screenshot 2026-05-29 at 11 52 48 PM" src="https://github.com/user-attachments/assets/af1e09f1-dc5f-444f-9e41-2b3b785f16f6" />
+**Render Free Tier**
 
-<img width="417" height="268" alt="Screenshot 2026-05-29 at 11 53 11 PM" src="https://github.com/user-attachments/assets/58f8282a-92ba-49ee-916d-3eb54a294eda" />
+The multiplayer server is hosted on Render's free tier. The first connection to a study room may take 30–60 seconds while the server wakes up.
 
-<img width="417" height="268" alt="Screenshot 2026-05-29 at 11 53 21 PM" src="https://github.com/user-attachments/assets/9ab12617-843a-4b93-beda-b6fe0dc65687" />
+**macOS Security Warning**
 
+Study Buddy is currently not Apple code-signed or notarized.
 
+If macOS prevents the application from opening:
 
+1. Right-click the application.
+2. Select **Open**.
+3. Confirm that you want to run the application.
+
+## Future Plans
+
+* Additional cat varieties
+* Animated cats inside shared study rooms
+* Shared music support in study rooms
+* Automatic rollover of unfinished tasks to the next day
+* Weather-connected room window
+* Improved onboarding experience
+* Additional room interactions and collectibles
+
+## Screenshots
+
+### Main Room
+
+(Add screenshot)
+
+### Focus Timer
+
+(Add screenshot)
+
+### Shared Study Room
+
+(Add screenshot)
 
 
