@@ -64,7 +64,7 @@ A cozy desktop productivity companion that combines focus sessions, website bloc
 
 ## Why I Built This
 
-I wanted a study tool that felt more engaging than a traditional timer or to-do list. Study Buddy combines productivity features with a virtual pet and shared study spaces to make studying feel more rewarding. Along the way, it became my largest software engineering project and a way to explore desktop application development.
+I wanted a study tool that felt more engaging than a traditional timer or to-do list. Study Buddy combines productivity features with a virtual pet and shared study spaces to make studying feel more rewarding. 
 
 ## What I Learned
 
